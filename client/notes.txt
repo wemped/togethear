@@ -1,0 +1,6 @@
+SC.get("URL TO A TRACK", {QUERY STUFF?}, CALLBACK(tracks))
+    can get track from this and then use...
+
+    SC.oEmbed('track.uri', document element);
+
+    SC.stream("some url", {options});

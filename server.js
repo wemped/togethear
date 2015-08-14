@@ -1,6 +1,7 @@
 var express = require('express');
 var path = require('path');
 var io = require('socket.io');
+var session = require('express-session');
 
 /*Start listening*/
 var app = express();

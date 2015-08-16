@@ -20,4 +20,5 @@ io.use(function (socket,next){
     sessionMiddleware(socket.request, socket.request.res, next);
 });
 
-require('./config/routes.js')(app,io);
+require('./server/config/mongoose.js');
+require('./server/config/routes.js')(app,io);

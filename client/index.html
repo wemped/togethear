@@ -1,29 +1,34 @@
-<html ng-app='togethear-app'>
+<html ng-app='togethear-app' id='togethear-app'>
 <head>
-    <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <!-- Spotify -->
-    <script src="//connect.soundcloud.com/sdk-2.0.0.js"></script>
-    <!-- Socket.io -->
-    <script type ="text/javascript" src="/socket.io/socket.io.js"></script>
-    <!-- Angular -->
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.min.js"></script>
-    <title>togethear</title>
-    <script type="text/javascript">
-    //Define angular app//
-    var togethear_app = angular.module('togethear-app',['ngRoute']);
-    //Load Controllers and Factories//
-    </script>
-    <script src="./controllers/stations.js"></script>
-    <script src="./main.js"></script>
+
 </head>
 <body>
+    <!-- Navbar and stuff -->
     <h1> togethear </h1>
-<!--     <div id='sc_player'>
+    <div ng-controller = 'UserController as uC' id='UserController'>
+        <div ng-view=""></div>
     </div>
-    <button id='button'>ALSDKJASD</button> -->
-    <div ng-view=""></div>
+    <!-- Player footer -->
 </body>
-<!-- <script src="./main.js"></script> -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<!-- Spotify -->
+<script src="//connect.soundcloud.com/sdk-2.0.0.js"></script>
+<!-- Socket.io -->
+<script type ="text/javascript" src="/socket.io/socket.io.js"></script>
+<!-- Angular -->
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.min.js"></script>
+<title>togethear</title>
+<script type="text/javascript">
+//Define angular app//
+var togethear_app = angular.module('togethear-app',['ngRoute']);
+//Load Controllers and Factories//
+</script>
+<script src="./javascripts/factories/user.js"></script>
+<script src="./javascripts/controllers/users.js"></script>
+<script src="./javascripts/factories/station.js"></script>
+<script src="./javascripts/controllers/stations.js"></script>
+<script src="./javascripts/initialize.js"></script>
+<script src="./javascripts/routes.js"></script>
 </html>

@@ -1,6 +1,7 @@
 var express = require('express');
 var path = require('path');
 var io = require('socket.io');
+var session = require('express-session');
 
 /*Start listening*/
 var app = express();
@@ -19,4 +20,5 @@ io.use(function (socket,next){
     sessionMiddleware(socket.request, socket.request.res, next);
 });
 
-require('./config/routes.js')(app,io);
+require('./server/config/mongoose.js');
+require('./server/config/routes.js')(app,io);

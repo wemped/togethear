@@ -14,16 +14,52 @@ var socket = io.connect();
 socket.on('login_response',function (data){
     $user_scope.login_answer(data);
 });
-socket.on('playlist_update', function (playlist){
-   var station_controller_elem = angular.element($('#StationController'));
-   $station_scope = station_controller_elem.scope();
-   //^^this has to be here because of page loading times
 
-    console.log('got a playlist_updated');
-    console.log(playlist);
-    if ($station_scope){
-      $station_scope.sC.update_playlist(playlist);
+socket.on('sync',function (data){
+    var listen_controller_elem = angular.element($('#ListenController'));
+    $listen_scope = listen_controller_elem.scope();
+    console.log('syncing..');
+    if ($listen_scope){
+        $listen_scope.lC.sync(data);
     }
+});
+
+socket.on('sync_single', function (data){
+    //assumes this user is on his station page.
+    var station_controller_elem = angular.element($('#StationController'));
+    $station_scope = station_controller_elem.scope();
+    //^^this has to be here because of page loading times
+
+     console.log('got a sync_single');
+     console.log(data);
+     if ($station_scope){
+         console.log('calling controller...');
+        $station_scope.sC.sync_single(data);
+     }
+});
+
+socket.on('playlist_update', function (data){
+
+  if (data.my_station){
+    var station_controller_elem = angular.element($('#StationController'));
+    $station_scope = station_controller_elem.scope();
+    //^^this has to be here because of page loading times
+
+     console.log('got a playlist_updated');
+     console.log(data);
+     if ($station_scope){
+         console.log('calling controller...');
+        $station_scope.sC.update_playlist(data.playlist);
+     }
+  }else{
+    var listen_controller_elem = angular.element($('#ListenController'));
+    $listen_scope = listen_controller_elem.scope();
+    console.log('updating a listening playlist..');
+    if ($listen_scope){
+      $listen_scope.lC.update_playlist(data.playlist);
+    }
+  }
+
 });
 
 /*Angular Routes*/

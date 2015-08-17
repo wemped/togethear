@@ -41,7 +41,7 @@ togethear_app.factory('StationFactory',function ($http){
     };
     factory.request_playlist = function (){
         console.log('emitting request..');
-        socket.emit('/stations/getPlaylist');
+        socket.emit('/stations/getPlaylist',{});
     };
     factory.request_stations = function (callback){
         $http.get('/stations').success(function (response){
@@ -55,6 +55,7 @@ togethear_app.factory('StationFactory',function ($http){
         };
         socket.emit('/stations/sync',update);
     };
+    // factory.request_sync = function ()
 
     return factory;
 });

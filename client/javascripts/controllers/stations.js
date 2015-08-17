@@ -1,4 +1,4 @@
-togethear_app.controller('StationController',function ($scope,StationFactory,$location){
+togethear_app.controller('StationController',function ($scope,StationFactory,$location,$routeParams){
     var my = this;
     var sc_client_id = '28528ad11d2c88f57b45b52a5a0f2c83';
     var playing = false;
@@ -67,6 +67,7 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
 
         });
     };
+    //if station id is empty I'm requesting my own playlist
     my.request_playlist = function (){
         console.log('requesting playlist');
         StationFactory.request_playlist();
@@ -74,12 +75,36 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
     my.update_playlist = function (new_playlist){
         console.log('in controller updating playlist');
         console.log(new_playlist);
-        my.playlist = new_playlist.playlist;
+        my.playlist = new_playlist;
         $scope.$apply();
     };
-    my.request_playlist();
-    my.request_stations();
+    my.sync_single = function (data){
+        var response = {};
+        if(now_playing){
+            response = {
+                current_position : now_playing._player._currentPosition,
+                requester_socket_id : data.requester_socket_id
+            };
+        }else{
+            console.log('not playing right now');
+            response.err = 'not playing right now';
+            //TODO
+        }
+
+
+        console.log('sending sync_single_response with ');
+        console.log(response);
+        socket.emit('/stations/sync_single_response',response);
+    };
+    // var request_sync = function (){
+    //     StationFactory.request_sync(function (){
+    //         //do stuff
+    //     });
+    // };
+
     var sync = function (){
         StationFactory.sync(now_playing_info,now_playing._player._currentPosition);
     };
+    my.request_playlist();
+    my.request_stations();
 });

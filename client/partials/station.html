@@ -1,0 +1,10 @@
+<div ng-controller = 'ListenController as lC' id='ListenController'>
+    <a href='#/dashboard'>Dashboard</a>
+    <ul>
+        <li ng-repeat='track in lC.playlist'>
+            <p ng-bind='track.title'></p>
+        </li>
+    </ul>
+    <button ng-click='lC.join_station()'>Join station!</button>
+    <audio id='audio'></audio>
+</div>

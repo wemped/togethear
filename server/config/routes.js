@@ -31,7 +31,13 @@ module.exports = (function (app,io){
             Stations.getPlaylist(socket,io);
         });
         socket.on('/stations/sync', function (data){
-
+            console.log(data);
+            Stations.sync(data);
         });
+    });
+    /*Http*/
+    app.get('/stations',function (req,res){
+        console.log('got get');
+        Stations.all(req,res);
     });
 });

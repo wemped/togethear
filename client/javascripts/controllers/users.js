@@ -2,14 +2,10 @@ togethear_app.controller('UserController',function ($scope,UserFactory,$location
     var my = this;
     my.err = '';
     my.login = function (){
-        UserFactory.login(my.log, function (response){
-            //todo
-        });
+        UserFactory.login(my.log);
     };
     my.register = function (){
-        UserFactory.register(my.reg, function (response){
-            //todo
-        });
+        UserFactory.register(my.reg);
     };
     my.login_answer = function(response){
         console.log(response);

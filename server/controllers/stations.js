@@ -29,7 +29,8 @@ module.exports = (function (){
             if (!data.track.streamable){
                 return;
             }
-            Station.findByIdAndUpdate(socket.request.session.station,
+            console.log(data);
+            Station.findByIdAndUpdate(socket.request.session.station_id,
                                                       {$push : {playlist : data.track}},
                                                       {safe : true, upsert : true, new : true},
                 function (err, station){
@@ -47,7 +48,7 @@ module.exports = (function (){
                 if (err){
                     console.log(err);
                 }else{
-                    console.log(station.playlist);
+                    // console.log(station.playlist);
                     socket.emit('playlist_update', {playlist : station.playlist});
                 }
             });
@@ -57,7 +58,16 @@ module.exports = (function (){
         },
         sync : function (data,socket,io){
 
+        },
+        all : function (req,res){
+
+            var query = Station.find({}).select({"playlist" : 0});
+            query.exec(function (err,stations){
+                console.log(stations);
+                res.json(stations);
+            });
         }
+
 
     };
 })();

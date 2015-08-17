@@ -1,4 +1,4 @@
-togethear_app.factory('StationFactory',function (){
+togethear_app.factory('StationFactory',function ($http){
     var factory = {};
     var sc_client_id = '28528ad11d2c88f57b45b52a5a0f2c83';
     var sc_resolve_url = "http://api.soundcloud.com/resolve.json?url=";
@@ -8,8 +8,8 @@ togethear_app.factory('StationFactory',function (){
     };
     factory.addTrack = function (track_url,callback){
         var results = {};
-        $.get(sc_resolve_url + track_url + sc_client_url, function (track_info){
-            // console.log(track_info);
+        // console.log('track url ->' + track_url);
+        $http.get(sc_resolve_url + track_url + sc_client_url, function (track_info){
             if(track_info.streamable){
                 //refine track_info object and save it into playlist,
                 //then emit to server
@@ -33,8 +33,7 @@ togethear_app.factory('StationFactory',function (){
             useHTML5Audio:true,
             preferFlash :false
         };
-
-        SC.stream('/tracks/' + track_info.id, smOptions, function (player){
+        SC.stream('/tracks/' + track_info.sc_id, smOptions, function (player){
             var results = {};
              results.player = player;
             callback(results);
@@ -43,6 +42,18 @@ togethear_app.factory('StationFactory',function (){
     factory.request_playlist = function (){
         console.log('emitting request..');
         socket.emit('/stations/getPlaylist');
+    };
+    factory.request_stations = function (callback){
+        $http.get('/stations').success(function (response){
+            callback(response);
+        });
+    };
+    factory.sync = function (now_playing,current_position){
+        var update = {
+            track_info : now_playing,
+            dj_position : current_position
+        };
+        socket.emit('/stations/sync',update);
     };
 
     return factory;

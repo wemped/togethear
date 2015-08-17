@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
+var Station = mongoose.model('Station');
 var Stations = require('./stations.js');
 
 module.exports = (function (){
@@ -19,6 +20,18 @@ module.exports = (function (){
                         socket.request.session.station_id = user.station;
                         // console.log(socket.request.session);
                         response.user = user;
+                        //DJ JOIN ITS OWN ROOM?
+                        //update the station to have the dj's socket id
+                        console.log("socket id -> " + socket.id);
+                        Station.findByIdAndUpdate(user.station,
+                            {dj_socket_id : socket.id},{new:true,upsert:true,safe:true},
+                            function (err,station){
+                                if(err){
+                                    console.log(err);
+                                }else{
+                                    console.log(station);
+                                }
+                            });
                     }else{
                         response.err = 'Incorrect password for that username';
                     }

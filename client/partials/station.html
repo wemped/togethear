@@ -1,15 +1,10 @@
-<div ng-controller = 'StationController as sC' id='StationController'>
-    <input type='text' placeholder='SoundCloud Song URL' ng-model='sC.trackUrl' />
-    <button ng-click='sC.addTrack()'>Add!</button>
-    <p ng-bind='sC.err'></p>
-    <h2>Playlist</h2>
+<div ng-controller = 'ListenController as lC' id='ListenController'>
+    <a href='#/dashboard'>Dashboard</a>
     <ul>
-        <li ng-repeat='track in sC.playlist'>
-            <span ng-bind='track.title'></span> -
-            <span ng-bind='track.sc_username'></span>
+        <li ng-repeat='track in lC.playlist'>
+            <p ng-bind='track.title'></p>
         </li>
     </ul>
-    <h3>Player</h3>
-    <button ng-click='sC.play()'>PLAY</button>
-    <button ng-click='sC.pause()'>PAUSE</button>
+    <button ng-click='lC.join_station()'>Join station!</button>
+    <audio id='audio'></audio>
 </div>

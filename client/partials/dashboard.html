@@ -1,4 +1,24 @@
 <div ng-controller = 'StationController as sC'>
     <!-- <button ng-click='sC.create()'>Create Station</button> -->
-    <a href='#/station'>Go to my station</a>
+    <a href='#/my_station'>Go to my station</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Station</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat='station in sC.stations'>
+                {{station}}
+                <td><span ng-bind='station.dj_username'></span></td>
+                <td>
+                    <a ng-href='#/station/{{station._id}}' >
+                        <span ng-bind='station._id'></span>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>

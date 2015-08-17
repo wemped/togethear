@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var StationSchema = new mongoose.Schema({
     dj : {type : mongoose.Schema.Types.ObjectId, ref: 'User'},
     dj_username : String,
+    dj_socket_id : String,
     playlist : [{
         title : String,
         artwork_url : String,

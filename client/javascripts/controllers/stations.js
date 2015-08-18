@@ -19,7 +19,24 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
     my.stations = [];
     my.playlist = [];
     my.err = '';
+    my.next_song = function (){
+        console.log('next_song!');
+        nextSong();
+    };
+    my.addPlaylistToCatalog = function (){
+        StationFactory.addPlaylistToCatalog(my.playlistUrl,function(results){
+            var len = results.tracks.length;
+            for (var i=0; i<len; i++){
+                my.catalog.push(results.tracks[i]);
+            }
+            len = results.err.length;
+            for (var j=0; j<len; j++){
+                my.err += "<p>Not streamable -- " + results.err[j].title + "</p>";
+            }
+        });
+        my.playlistUrl = '';
 
+    };
     my.addTrackToCatalog = function (){
         StationFactory.addTrackToCatalog(my.trackUrl,function (results){
             if(results.err){
@@ -106,12 +123,14 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
         StationFactory.sync_all(my.playlist,now_playing.currentTime,next_song);
     };
     function my_station_initialize(){
-        var elem = document.getElementById('audio');
-        now_playing = elem;
-        now_playing.src = my.playlist[0].stream_url + "?client_id=28528ad11d2c88f57b45b52a5a0f2c83";
-        now_playing.load();
-        // now_playing = elem;
-        now_playing_info = my.playlist[0];
+        if( my.playlist[0] ){
+            var elem = document.getElementById('audio');
+            now_playing = elem;
+            now_playing.src = my.playlist[0].stream_url + "?client_id=28528ad11d2c88f57b45b52a5a0f2c83";
+            now_playing.load();
+            // now_playing = elem;
+            now_playing_info = my.playlist[0];
+        }
     }
 
     $scope.$on("$routeChangeSuccess", function ($currentRoute, $previousRoute){

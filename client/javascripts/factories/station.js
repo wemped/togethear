@@ -6,6 +6,26 @@ togethear_app.factory('StationFactory',function ($http){
     factory.create = function (callback){
         socket.emit('/stations/create');
     };
+    factory.addPlaylistToCatalog = function (playlist_url,callback){
+        var results = {};
+        $http.get(sc_resolve_url + playlist_url + sc_client_url).then( function (response){
+            var tracks = response.data.tracks;
+            var len = tracks.length;
+            var results= {};
+            results.tracks = [];
+            results.err = [];
+            // callback(tracks);
+            for (var i=0; i < len; i++){
+                if(tracks[i].streamable){
+                    results.tracks.push(tracks[i]);
+                    socket.emit('/stations/addTrackToCatalog',{track : tracks[i]});
+                }else{
+                    results.err.push(tracks[i]);
+                }
+            }
+            callback(results);
+        });
+    };
     factory.addTrackToCatalog = function (track_url, callback){
         var results = {};
         $http.get(sc_resolve_url + track_url + sc_client_url).then( function (response){

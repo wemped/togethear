@@ -37,7 +37,7 @@ var StationSchema = new mongoose.Schema({
         sc_username : String,
         sc_user_url : String,
     }],
-    known_tracks : [{
+    catalog : [{
         title : String,
         artwork_url : String,
         duration : Number,

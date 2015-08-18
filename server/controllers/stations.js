@@ -25,14 +25,20 @@ module.exports = (function (){
                 );
             });
         },
-        addTrack : function (data,socket,io){
-            data.track.title = data.track.title;
+        addTrackToCatalog : function (data,socket,io){
+            station_id = socket.request.session.station_id;
+            Station.findByIdAndUpdate(station_id,
+                                          {$push : {catalog : data.track}},
+                                          {safe : true,upsert : true, new : true},
+            function (err,station){
+                // console.log(station.catalog);
+            });
+        },
+        addTrackToPlaylist : function (data,socket,io){
             station_id = socket.request.session.station_id;
             if (!data.track.streamable){
                 return;
             }
-            console.log('^^^^^^%%%%%%%&&&&&******');
-            console.log(data);
             Station.findByIdAndUpdate(socket.request.session.station_id,
                                                       {$push : {playlist : data.track}},
                                                       {safe : true, upsert : true, new : true},
@@ -42,7 +48,7 @@ module.exports = (function (){
                         return;
                     }
                     socket.emit ('/stations/playlist_update', {playlist : station.playlist, my_station : true});
-                    io.to(station_id).emit('/listens/playlist_update',{playlist : station.playlist, my_station : false});
+                    io.to(station_id).emit('/listens/playlist_update',{playlist : station.playlist, my_station : false, dj_socket_id : socket.id});
                 });
         },
         getPlaylist : function (data,socket,io){
@@ -55,18 +61,14 @@ module.exports = (function (){
                 station_id = socket.request.session.station_id;
                 my_station = true;
             }
-            console.log('calling db...');
-            console.log(socket.request.session.station_id);
             Station.findOne({_id : station_id},function (err,station){
                 if (err){
                     console.log(err);
                 }else{
-                    console.log(station);
-                    console.log('emitting playlist -> ' + station.playlist);
                     if(my_station){
-                        socket.emit('/stations/playlist_update', {playlist : station.playlist, my_station : my_station});
+                        socket.emit('/stations/playlist_update', {playlist : station.playlist, my_station : my_station, catalog : station.catalog});
                     }else{
-                        socket.emit('/listens/playlist_update', {playlist : station.playlist, my_station : my_station});
+                        socket.emit('/listens/playlist_update', {playlist : station.playlist, my_station : my_station, dj_socket_id : station.dj_socket_id});
                     }
                 }
             });
@@ -78,10 +80,8 @@ module.exports = (function (){
 
         },
         all : function (req,res){
-
             var query = Station.find({}).select({"playlist" : 0});
             query.exec(function (err,stations){
-                console.log(stations);
                 res.json(stations);
             });
         },
@@ -92,7 +92,6 @@ module.exports = (function (){
                 if (err){
                     console.log(err);
                 }else{
-                    console.log('foud station I joined, asking dj for sync');
                     var data = {
                         requester_socket_id : socket.id
                     };
@@ -106,8 +105,6 @@ module.exports = (function (){
             io.to(data.requester_socket_id).emit('/listens/sync',data);
         },
         sync_all : function (data,socket,io){
-            console.log('GOT A SYNC ALL FROM THE DJ');
-            console.log(data);
             station_id = socket.request.session.station_id;
             //dj calls this, station_id will be in the session
             //get room
@@ -129,12 +126,16 @@ module.exports = (function (){
                             console.log(err);
                             return;
                         }
-                        console.log(station);
+                        // console.log(station);
                     });
                 });
             }else{
 
             }
+        },
+        client_request_sync : function (data,socket,io){
+             data.requester_socket_id = socket.id;
+             io.to(data.dj_socket_id).emit('/stations/sync_single',data);
         }
     };
 })();

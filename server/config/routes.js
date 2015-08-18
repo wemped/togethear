@@ -23,9 +23,12 @@ module.exports = (function (app,io){
         socket.on('/stations/play',function (data){
             console.log(data);
         });
-        socket.on('/stations/addTrack',function (data){
-            Stations.addTrack(data,socket,io);
+        socket.on('/stations/addTrackToPlaylist',function (data){
+            Stations.addTrackToPlaylist(data,socket,io);
             // console.log(data);
+        });
+        socket.on('/stations/addTrackToCatalog',function (data){
+            Stations.addTrackToCatalog(data,socket,io);
         });
         socket.on('/stations/getPlaylist',function (data){
             Stations.getPlaylist(data,socket,io);
@@ -43,6 +46,9 @@ module.exports = (function (app,io){
         });
         socket.on('/stations/sync_all', function (data){
             Stations.sync_all(data,socket,io);
+        });
+        socket.on('/stations/client_request_sync', function (data){
+            Stations.client_request_sync(data,socket,io);
         });
     });
     /*Http*/

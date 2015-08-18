@@ -38,7 +38,7 @@ module.exports = (function (){
                 }else{
                     response.err = "We don't have that username on record..";
                 }
-                socket.emit('login_response',response);
+                socket.emit('/users/login_response',response);
             });
         },
         register : function(data,socket,io){
@@ -54,7 +54,7 @@ module.exports = (function (){
                     // console.log('calling stations.create');
                     Stations.create( user._id, user.username,socket);
                     response.user = user;
-                    socket.emit('login_response',response);
+                    socket.emit('/users/login_response',response);
                 }
             });
         }

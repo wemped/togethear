@@ -1,8 +1,8 @@
 togethear_app.controller('ListenController', function ($scope, ListenFactory,$location,$routeParams){
     var now_playing;
     var now_playing_info;
-    var last_updated_track_position;
     var station_id = $routeParams.id;
+    var first_run = true;
 
     var my=this;
     my.playlist = [];
@@ -17,11 +17,14 @@ togethear_app.controller('ListenController', function ($scope, ListenFactory,$lo
     my.update_playlist = function (new_playlist){
         //update playlist, set first song as the now_playing and begin loading
         my.playlist = new_playlist;
-        var elem = document.getElementById('audio');
-        elem.src = my.playlist[0].stream_url + "?client_id=28528ad11d2c88f57b45b52a5a0f2c83";
-        elem.load();
-        now_playing = elem;
-        now_playing_info = my.playlist[0];
+        if (first_run){
+            var elem = document.getElementById('audio');
+            elem.src = my.playlist[0].stream_url + "?client_id=28528ad11d2c88f57b45b52a5a0f2c83";
+            elem.load();
+            now_playing = elem;
+            now_playing_info = my.playlist[0];
+            first_run = false;
+        }
         $scope.$apply();
     };
     var request_sync = function (station_id){
@@ -30,12 +33,28 @@ togethear_app.controller('ListenController', function ($scope, ListenFactory,$lo
     };
     my.sync = function (data){
         //moves the now_playing song to correct time and plays
-        if(data.current_position){
-            last_updated_track_position = data.current_position;
-            var seconds = Math.ceil(last_updated_track_position * 0.001);
-            now_playing.currentTime = seconds;
-            now_playing.play();
+        if (data.playlist){
+            console.log('playlist exists in the data ->');
+            console.log(data.playlist);
+            my.playlist = data.playlist;
         }
+        if(data.next_song){
+            now_playing.src = my.playlist[0].stream_url + "?client_id=28528ad11d2c88f57b45b52a5a0f2c83";
+            now_playing_info = my.playlist[0];
+            now_playing.play();
+        }else{
+            if(data.current_position){
+                var local_position = now_playing.currentTime;
+                console.log('local_position -> ' + local_position);
+                //if the djs position is more than 2 seconds off local position then reset
+                if(data.current_position && Math.abs(data.current_position - local_position) > 1){
+                    var seconds = data.current_position;
+                    now_playing.currentTime = seconds;
+                    now_playing.play();
+                }
+            }
+        }
+        $scope.$apply();
     };
     $scope.$on("$routeChangeSuccess", function ($currentRoute, $previousRoute){
         //get the playlist on view load

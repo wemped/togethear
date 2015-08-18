@@ -34,14 +34,15 @@ module.exports = (function (app,io){
             console.log(data);
             Stations.sync(data);
         });
-
-        /*Listen*/
         socket.on('/stations/join', function (data){
             console.log(data);
             Stations.join(data,socket,io);
         });
         socket.on('/stations/sync_single_response', function (data){
             Stations.guide_sync_single(data,socket,io);
+        });
+        socket.on('/stations/sync_all', function (data){
+            Stations.sync_all(data,socket,io);
         });
     });
     /*Http*/

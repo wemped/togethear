@@ -9,7 +9,9 @@
             <span ng-bind='track.sc_username'></span>
         </li>
     </ul>
+    <button ng-click='sC.sync_all(false)'>sync_all</button>
     <h3>Player</h3>
+    <audio id='audio'></audio>
     <button ng-click='sC.play()'>PLAY</button>
     <button ng-click='sC.pause()'>PAUSE</button>
 </div>

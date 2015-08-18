@@ -1,5 +1,6 @@
 togethear_app.controller('StationController',function ($scope,StationFactory,$location,$routeParams){
     var my = this;
+    var first_run = true;
     var sc_client_id = '28528ad11d2c88f57b45b52a5a0f2c83';
     var playing = false;
     var now_playing;
@@ -7,9 +8,12 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
     var nextSong = function (){
         my.playlist.splice(0,1);
         playing = false;
-        now_playing = null;
+        now_playing_info = my.playlist[0];
+        now_playing.src = my.playlist[0].stream_url + "?client_id=28528ad11d2c88f57b45b52a5a0f2c83";
+        now_playing.load();
         $scope.$apply();
-        my.play();
+        // my.sync_all(true);
+        my.play(true);
     };
     my.stations = [];
     my.playlist = [];
@@ -20,33 +24,31 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
             if (results.err){
                 my.err = results.err;
             }else{
-                // my.playlist.push(results.new_track);
+
             }
-            // $scope.$apply();
             my.trackUrl = '';
         });
     };
-    my.play = function (){
+    my.play = function (next_song){
         if (playing){
             //nuthin
         }else if (now_playing){
+            //add a listener at halfway through the song to sync_all
+            var halfway = Math.ceil(0.5 * (now_playing_info.duration * 0.001));
+            var sync_at_half = function (){
+                var that = this;
+                if(now_playing.currentTime >= halfway){
+                    my.sync_all(false);
+                    that.removeEventListener('timeupdate', sync_at_half,false);
+                }
+            };
+            now_playing.addEventListener('ended',function (){ nextSong();});
+            now_playing.addEventListener('timeupdate',sync_at_half);
             now_playing.play();
-            console.log(now_playing);
-            sync();
-
+            console.log('sending sync_all to factory with next_song = ' + next_song);
+            my.sync_all(next_song);
         }else{
-            StationFactory.getStream(my.playlist[0], function (results){
-                var player = results.player;
-                player._player._html5Audio.addEventListener('ended',function (){
-                    nextSong();
-                });
-                player.play();
-                now_playing = player;
-                now_playing_info = my.playlist[0];
-                console.log('now_playing ->');
-                console.log(now_playing);
-                sync();
-            });
+            // now_playing.play();
         }
         playing = true;
     };
@@ -57,54 +59,64 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
         playing = false;
     };
     my.request_stations = function (){
-        console.log('requesting stations');
         StationFactory.request_stations( function (stations){
-            //set scope stations to these
-            console.log('stations ->');
-            console.log(stations);
             my.stations = stations;
-            // $scope.$apply();
-
         });
     };
     //if station id is empty I'm requesting my own playlist
     my.request_playlist = function (){
-        console.log('requesting playlist');
         StationFactory.request_playlist();
     };
     my.update_playlist = function (new_playlist){
-        console.log('in controller updating playlist');
-        console.log(new_playlist);
         my.playlist = new_playlist;
+        if(first_run){
+            my_station_initialize();
+            first_run = false;
+        }
         $scope.$apply();
     };
     my.sync_single = function (data){
+        //just sync the song position
         var response = {};
         if(now_playing){
             response = {
-                current_position : now_playing._player._currentPosition,
+                current_position : now_playing.currentTime,
                 requester_socket_id : data.requester_socket_id
             };
         }else{
-            console.log('not playing right now');
             response.err = 'not playing right now';
             //TODO
         }
-
-
-        console.log('sending sync_single_response with ');
-        console.log(response);
+        console.log('sending single response');
         socket.emit('/stations/sync_single_response',response);
     };
-    // var request_sync = function (){
-    //     StationFactory.request_sync(function (){
-    //         //do stuff
-    //     });
-    // };
 
-    var sync = function (){
-        StationFactory.sync(now_playing_info,now_playing._player._currentPosition);
+    my.sync_all = function (next_song){
+        //sync playlist and current position and everything
+        StationFactory.sync_all(my.playlist,now_playing.currentTime,next_song);
     };
-    my.request_playlist();
-    my.request_stations();
+    function my_station_initialize(){
+        var elem = document.getElementById('audio');
+        now_playing = elem;
+        now_playing.src = my.playlist[0].stream_url + "?client_id=28528ad11d2c88f57b45b52a5a0f2c83";
+        now_playing.load();
+        // now_playing = elem;
+        now_playing_info = my.playlist[0];
+    }
+
+    $scope.$on("$routeChangeSuccess", function ($currentRoute, $previousRoute){
+        //get the playlist on view load
+        // console.log($currentRoute);
+        // console.log($previousRoute);
+        console.log($location.path());
+        if($location.path() === '/my_station'){
+            console.log('in my_station');
+            my.request_playlist();
+            // my_station_initialize();
+        }else{
+            console.log('not in my_station');
+            my.request_stations();
+        }
+    });
+
 });

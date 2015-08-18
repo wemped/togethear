@@ -8,9 +8,14 @@ togethear_app.factory('StationFactory',function ($http){
     };
     factory.addTrack = function (track_url,callback){
         var results = {};
-        // console.log('track url ->' + track_url);
-        $http.get(sc_resolve_url + track_url + sc_client_url, function (track_info){
+        console.log('track url ->' + track_url);
+        console.log(sc_resolve_url + track_url + sc_client_url);
+        $http.get(sc_resolve_url + track_url + sc_client_url).then( function (response){
+            var track_info = response.data;
+            console.log('got info -> ');
+            console.log(track_info);
             if(track_info.streamable){
+                console.log('refining then emitting..');
                 //refine track_info object and save it into playlist,
                 //then emit to server
                 track_info.track_source = 'soundcloud';
@@ -48,12 +53,14 @@ togethear_app.factory('StationFactory',function ($http){
             callback(response);
         });
     };
-    factory.sync = function (now_playing,current_position){
+    factory.sync_all = function (playlist,current_position,next_song){
         var update = {
-            track_info : now_playing,
-            dj_position : current_position
+            next_song : next_song,
+            playlist : playlist,
+            current_position : current_position
         };
-        socket.emit('/stations/sync',update);
+        console.log('emitting sync all with next_song = ' + next_song);
+        socket.emit('/stations/sync_all',update);
     };
     // factory.request_sync = function ()
 

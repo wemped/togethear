@@ -10,19 +10,13 @@ togethear_app.controller('ListenController', function ($scope, ListenFactory,$lo
     my.offset = 0;
     my.join_station = function (){
         //join room, get playlist
-        ListenFactory.join_station(station_id);
+        ListenFactory.join_station(station_id,dj_socket_id);
     };
-    my.request_playlist = function (station_id){
-        //will run update_playlist asap
-        ListenFactory.request_playlist(station_id);
-    };
-    my.update_playlist = function (data){
-        //update playlist, set first song as the now_playing and begin loading
-        my.playlist = data.playlist;
-        if (data.dj_socket_id){
-            dj_socket_id = data.dj_socket_id;
-        }
-        if (first_run){
+    my.get_station = function (){
+        ListenFactory.get_station(station_id, function (station){
+            console.log(station);
+            my.playlist = station.playlist;
+            dj_socket_id = station.dj_socket_id;
             if(my.playlist[0]){
                 var elem = document.getElementById('audio');
                 elem.src = my.playlist[0].stream_url + "?client_id=28528ad11d2c88f57b45b52a5a0f2c83";
@@ -34,10 +28,19 @@ togethear_app.controller('ListenController', function ($scope, ListenFactory,$lo
                 var playbar = function(){
                     playbar_pos = Math.round(now_playing.currentTime / interval) * 0.0025;
                     line.animate(playbar_pos, {duration: 0});
-                }
+                };
             now_playing.addEventListener('timeupdate',playbar);
             }
-            first_run = false;
+        });
+    };
+    my.update_playlist = function (data){
+        //update playlist, set first song as the now_playing and begin loading
+        my.playlist = data.playlist;
+        if (data.dj_socket_id){
+            dj_socket_id = data.dj_socket_id;
+        }
+        if (first_run){
+
         }
         $scope.$apply();
     };
@@ -64,7 +67,7 @@ togethear_app.controller('ListenController', function ($scope, ListenFactory,$lo
                 var local_position = now_playing.currentTime;
                 console.log('local_position -> ' + local_position + ' dj_position -> ' + dj_position);
                 console.log('diff (ms)-> ' + ((dj_position - local_position) * 1000));
-                //if the djs position is more than 2 seconds off local position then reset
+                //if the djs position is more than ---- off local position then reset
                 if(Math.abs(dj_position - local_position) * 1000 > 300){
                     now_playing.currentTime = dj_position;
                     now_playing.play();
@@ -74,7 +77,6 @@ togethear_app.controller('ListenController', function ($scope, ListenFactory,$lo
         $scope.$apply();
     };
     $scope.$on("$routeChangeSuccess", function ($currentRoute, $previousRoute){
-        //get the playlist on view load
-        my.request_playlist(station_id);
+        my.get_station();
     });
 });

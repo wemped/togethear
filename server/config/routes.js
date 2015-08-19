@@ -1,11 +1,13 @@
 //Require controllers
-var Stations = require('./../controllers/stations.js');
+// var Stations = require('./../controllers/stations.js');
+var Listens = require('./../controllers/listens.js');
+var Djs = require('./../controllers/djs.js');
 var Users = require('./../controllers/users.js');
 module.exports = (function (app,io){
     /*Sockets*/
     io.sockets.on('connection', function(socket){
         console.log('CONNECTION session id -> ' + socket.request.session.id);
-
+        /*USER ROUTES*/
         socket.on('/users/login',function (data){
             console.log(data);
             // socket.emit('login_success',data);
@@ -15,45 +17,45 @@ module.exports = (function (app,io){
             console.log(data);
             Users.register(data,socket,io);
         });
-
-        socket.on('/stations/create',function (data){
+        /*DJ ROUTES*/
+        socket.on('/djs/create_station',function (data){
             console.log('got a create station');
-            Stations.create(data,socket,io);
+            Djs.create(data,socket,io);
         });
-        socket.on('/stations/play',function (data){
-            console.log(data);
-        });
-        socket.on('/stations/addTrackToPlaylist',function (data){
-            Stations.addTrackToPlaylist(data,socket,io);
+        socket.on('/djs/addTrackToPlaylist',function (data){
+            Djs.addTrackToPlaylist(data,socket,io);
             // console.log(data);
         });
-        socket.on('/stations/addTrackToCatalog',function (data){
-            Stations.addTrackToCatalog(data,socket,io);
+        socket.on('/djs/addTrackToCatalog',function (data){
+            Djs.addTrackToCatalog(data,socket,io);
         });
-        socket.on('/stations/getPlaylist',function (data){
-            Stations.getPlaylist(data,socket,io);
+        socket.on('/djs/sync_single_response', function (data){
+            Djs.guide_sync_single(data,socket,io);
         });
-        socket.on('/stations/sync', function (data){
+        socket.on('/djs/sync_all', function (data){
+            Djs.sync_all_listeners(data,socket,io);
+        });
+        /*LISTENER ROUTES*/
+        socket.on('/listens/getPlaylist',function (data){
+            Listens.getPlaylist(data,socket,io);
+        });
+        socket.on('/listens/join_station', function (data){
             console.log(data);
-            Stations.sync(data);
+            Listens.join_station(data,socket,io);
         });
-        socket.on('/stations/join', function (data){
-            console.log(data);
-            Stations.join(data,socket,io);
-        });
-        socket.on('/stations/sync_single_response', function (data){
-            Stations.guide_sync_single(data,socket,io);
-        });
-        socket.on('/stations/sync_all', function (data){
-            Stations.sync_all(data,socket,io);
-        });
-        socket.on('/stations/client_request_sync', function (data){
-            Stations.client_request_sync(data,socket,io);
+        socket.on('/listens/request_sync', function (data){
+            Listens.request_sync(data,socket,io);
         });
     });
     /*Http*/
     app.get('/stations',function (req,res){
         console.log('got get');
-        Stations.all(req,res);
+        Listens.getAllStations(req,res);
+    });
+    app.get('/djs/get_my_station', function (req,res){
+        Djs.get_my_station(req,res);
+    });
+    app.post('/listens/get_station',function (req,res){
+        Listens.getStation(req,res);
     });
 });

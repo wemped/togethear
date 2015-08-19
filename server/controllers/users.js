@@ -18,6 +18,8 @@ module.exports = (function (){
                         socket.request.session.user_id = user._id;
                         socket.request.session.username = user.username;
                         socket.request.session.station_id = user.station;
+                        socket.request.session.save();
+
                         // console.log(socket.request.session);
                         response.user = user;
                         //DJ JOIN ITS OWN ROOM?
@@ -51,6 +53,8 @@ module.exports = (function (){
                 }else{
                     socket.request.session.user_id = user._id;
                     socket.request.session.username = user.username;
+                    socket.request.session.save();
+
                     // console.log('calling stations.create');
                     Stations.create( user._id, user.username,socket);
                     response.user = user;

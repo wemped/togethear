@@ -60,6 +60,7 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
             var halfway = Math.ceil(0.5 * (now_playing_info.duration * 0.001));
             var interval = now_playing_info.duration / 400000 ;
             var playbar_pos;
+            $scope.showFooter = true;
             var sync_at_half = function (){
                 var that = this;
                 if(now_playing.currentTime >= halfway){

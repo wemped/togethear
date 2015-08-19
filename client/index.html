@@ -3,38 +3,32 @@
 <!-- jQuery -->
 <script src="./javascripts/assets/jquery.js"></script>
 <script src="./javascripts/assets/progressbar.min.js"></script>
-<style type="text/css">
-	#playerbar {
-		position: fixed;
-		bottom: 0;
-		width: 100%;
-	}
-	.line-container {
-		height: 5px;
-		width: 100%;
-	}
-	body {
-		padding: 0;
-		margin: 0;
-	}
-</style>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+<link type="text/css" rel="stylesheet" href="./styles/css/materialize.min.css"  media="screen,projection"/>
+<link rel="stylesheet" type="text/css" href="./styles/override.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
+	<div class="container">
     <!-- Navbar and stuff -->
-    <h1> togethear </h1>
-    <div ng-controller = 'UserController as uC' id='UserController'>
-        <div ng-view=""></div>
-    </div>
+	    <div ng-controller = 'UserController as uC' id='UserController'>
+	        <div ng-view=""></div>
+	    </div>
+   	</div>
     <!-- Player footer -->
-    <div class="line-container" id="playerbar">
-    </div>
+    <div id="footer">
+    	<div class="song-info" ng-show="showFooter">
+    		<h6>Song Title</h6>
+    	</div>
+	    <div class="line-container" id="playerbar">
+	    </div>
+	</div>
 </body>
 <!-- Spotify -->
 <script src="//connect.soundcloud.com/sdk-2.0.0.js"></script>
 <!-- Socket.io -->
 <script type ="text/javascript" src="/socket.io/socket.io.js"></script>
 <!-- Angular -->
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.min.js"></script>
 <title>togethear</title>
 <script type="text/javascript">
@@ -46,6 +40,8 @@ var line = new ProgressBar.Line('#playerbar', {
 });
 //Load Controllers and Factories//
 </script>
+<!-- Materialize javascript -->
+<script type="text/javascript" src="./styles/js/materialize.min.js"></script>
 <script src="./javascripts/factories/listen.js"></script>
 <script src="./javascripts/controllers/listens.js"></script>
 <script src="./javascripts/factories/user.js"></script>

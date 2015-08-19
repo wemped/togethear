@@ -62,7 +62,13 @@ socket.on('/listens/playlist_update', function (data){
 togethear_app.config(function ($routeProvider){
 $routeProvider
     .when('/',{
-        templateUrl : 'partials/login.html'
+        templateUrl : 'partials/splash.html'
+    })
+    .when('/login', {
+      templateUrl : 'partials/login.html'
+    })
+    .when('/dj_login', {
+      templateUrl : 'partials/dj_login.html'
     })
     .when('/dashboard',{
         templateUrl : 'partials/dashboard.html'

@@ -1,6 +1,23 @@
 <html ng-app='togethear-app' id='togethear-app'>
 <head>
-
+<!-- jQuery -->
+<script src="./javascripts/assets/jquery.js"></script>
+<script src="./javascripts/assets/progressbar.min.js"></script>
+<style type="text/css">
+	#playerbar {
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+	}
+	.line-container {
+		height: 5px;
+		width: 100%;
+	}
+	body {
+		padding: 0;
+		margin: 0;
+	}
+</style>
 </head>
 <body>
     <!-- Navbar and stuff -->
@@ -9,9 +26,9 @@
         <div ng-view=""></div>
     </div>
     <!-- Player footer -->
+    <div class="line-container" id="playerbar">
+    </div>
 </body>
-<!-- jQuery -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <!-- Spotify -->
 <script src="//connect.soundcloud.com/sdk-2.0.0.js"></script>
 <!-- Socket.io -->
@@ -23,6 +40,10 @@
 <script type="text/javascript">
 //Define angular app//
 var togethear_app = angular.module('togethear-app',['ngRoute']);
+//Initialize playbar
+var line = new ProgressBar.Line('#playerbar', {
+	color: '#FF00FF'
+});
 //Load Controllers and Factories//
 </script>
 <script src="./javascripts/factories/listen.js"></script>
@@ -33,4 +54,8 @@ var togethear_app = angular.module('togethear-app',['ngRoute']);
 <script src="./javascripts/controllers/stations.js"></script>
 <script src="./javascripts/initialize.js"></script>
 <script src="./javascripts/routes.js"></script>
+<script type="text/javascript">
+
+// line.animate(1.0, {from: {color: '#FF0000'}, to: {color: '#0000FF'}, duration: 0});
+</script>
 </html>

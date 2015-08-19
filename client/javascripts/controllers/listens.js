@@ -23,6 +23,14 @@ togethear_app.controller('ListenController', function ($scope, ListenFactory,$lo
             elem.load();
             now_playing = elem;
             now_playing_info = my.playlist[0];
+            var interval = now_playing_info.duration / 400000 ;
+            var playbar_pos;
+            var playbar = function(){
+                var that = this;
+                playbar_pos = Math.round(now_playing.currentTime / interval) * 0.0025;
+                line.animate(playbar_pos, {duration: 0});
+            }
+            now_playing.addEventListener('timeupdate',playbar);
             first_run = false;
         }
         $scope.$apply();

@@ -56,6 +56,8 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
         }else if (now_playing){
             //add a listener at halfway through the song to sync_all
             var halfway = Math.ceil(0.5 * (now_playing_info.duration * 0.001));
+            var interval = now_playing_info.duration / 400000 ;
+            var playbar_pos;
             var sync_at_half = function (){
                 var that = this;
                 if(now_playing.currentTime >= halfway){
@@ -63,8 +65,14 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
                     that.removeEventListener('timeupdate', sync_at_half,false);
                 }
             };
+            console.log('interval: ',interval);
+            var playbar = function(){
+                playbar_pos = Math.round(now_playing.currentTime / interval) * 0.0025;
+                line.animate(playbar_pos, {duration: 0});
+            }
             now_playing.addEventListener('ended',function (){ nextSong();});
             now_playing.addEventListener('timeupdate',sync_at_half);
+            now_playing.addEventListener('timeupdate',playbar);
             now_playing.play();
             console.log(now_playing.duration);
             console.log('sending sync_all to factory with next_song = ' + next_song);

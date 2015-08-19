@@ -42,7 +42,7 @@ socket.on('/stations/sync_single', function (data){
 });
 
 socket.on('/stations/playlist_update', function (data){
-
+  console.log('got a playlist update...');
     var station_controller_elem = angular.element($('#StationController'));
     $station_scope = station_controller_elem.scope();
     //^^this has to be here because of page loading times

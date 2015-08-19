@@ -2,6 +2,7 @@ var express = require('express');
 var path = require('path');
 var io = require('socket.io');
 var session = require('express-session');
+var bodyParser = require('body-parser');
 
 /*Start listening*/
 var app = express();
@@ -12,6 +13,7 @@ var sessionMiddleware = session({
     secret : 'TOGETHEAR 4EVR'
 });
 
+app.use(bodyParser.json());
 app.use(sessionMiddleware);
 app.use(express.static(path.join(__dirname,'./client')));
 

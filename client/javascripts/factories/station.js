@@ -14,11 +14,10 @@ togethear_app.factory('StationFactory',function ($http){
             var results= {};
             results.tracks = [];
             results.err = [];
-            // callback(tracks);
             for (var i=0; i < len; i++){
                 if(tracks[i].streamable){
                     results.tracks.push(tracks[i]);
-                    socket.emit('/stations/addTrackToCatalog',{track : tracks[i]});
+                    socket.emit('/djs/addTrackToCatalog',{track : tracks[i]});
                 }else{
                     results.err.push(tracks[i]);
                 }
@@ -37,7 +36,7 @@ togethear_app.factory('StationFactory',function ($http){
                 track_info.sc_user_url = track_info.user.permalink_url;
                 track_info.sc_username = track_info.user.username;
                 results.new_track = track_info;
-                socket.emit('/stations/addTrackToCatalog',{track : track_info});
+                socket.emit('/djs/addTrackToCatalog',{track : track_info});
             }else{
                 results.err = 'This soundcloud user has set streaming to false for this track :/';
             }
@@ -45,7 +44,7 @@ togethear_app.factory('StationFactory',function ($http){
         });
     };
     factory.addTrackToPlaylist = function (track,callback){
-        socket.emit('/stations/addTrackToPlaylist',{track : track});
+        socket.emit('/djs/addTrackToPlaylist',{track : track});
     };
     factory.getStream = function (track_info,callback){
         var smOptions = {
@@ -58,11 +57,14 @@ togethear_app.factory('StationFactory',function ($http){
             callback(results);
         });
     };
-    factory.request_playlist = function (){
-        socket.emit('/stations/getPlaylist',{});
+    factory.get_my_station = function (callback){
+        $http.get('/djs/get_my_station').then(function (response){
+            callback(response.data);
+        });
     };
     factory.request_stations = function (callback){
         $http.get('/stations').success(function (response){
+            console.log(response);
             callback(response);
         });
     };
@@ -72,9 +74,7 @@ togethear_app.factory('StationFactory',function ($http){
             playlist : playlist,
             current_position : current_position
         };
-        socket.emit('/stations/sync_all',update);
+        socket.emit('/djs/sync_all',update);
     };
-    // factory.request_sync = function ()
-
     return factory;
 });

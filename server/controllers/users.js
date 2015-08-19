@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Station = mongoose.model('Station');
-var Stations = require('./stations.js');
+var Djs = require('./Djs.js');
 
 module.exports = (function (){
     return {
@@ -56,7 +56,7 @@ module.exports = (function (){
                     socket.request.session.save();
 
                     // console.log('calling stations.create');
-                    Stations.create( user._id, user.username,socket);
+                    Djs.create_station( user._id, user.username,socket);
                     response.user = user;
                     socket.emit('/users/login_response',response);
                 }

@@ -1,17 +1,27 @@
 <div ng-controller = 'StationController as sC' id='StationController'>
     <input type='text' placeholder='SoundCloud Song URL' ng-model='sC.trackUrl' />
-    <button ng-click='sC.addTrack()'>Add!</button>
+    <button ng-click='sC.addTrackToCatalog()'>Add track to catalog!</button>
+    <input type='text' placeholder='SoundCloud Playlist URL' ng-model='sC.playlistUrl' />
+    <button ng-click='sC.addPlaylistToCatalog()'>Import playlist to catalog!</button>
     <p ng-bind='sC.err'></p>
     <h2>Playlist</h2>
     <ul>
         <li ng-repeat='track in sC.playlist'>
-            <span ng-bind='track.title'></span> -
+            <span ng-bind='track.title'></span>
             <span ng-bind='track.sc_username'></span>
         </li>
     </ul>
-    <button ng-click='sC.sync_all(false)'>sync_all</button>
     <h3>Player</h3>
     <audio id='audio'></audio>
     <button ng-click='sC.play()'>PLAY</button>
     <button ng-click='sC.pause()'>PAUSE</button>
+    <button ng-click='sC.sync_all(false)'>sync_all</button>
+    <button ng-click='sC.next_song()'>next</button>
+    <h3>Catalog</h3>
+    <ul>
+        <li ng-repeat = 'track in sC.catalog'>
+            <p ng-bind= 'track.title'></p>
+            <button ng-click='sC.addTrackToPlaylist(track)'>Add to playlist</button>
+        </li>
+    </ul>
 </div>

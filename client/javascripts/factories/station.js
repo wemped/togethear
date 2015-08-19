@@ -6,32 +6,46 @@ togethear_app.factory('StationFactory',function ($http){
     factory.create = function (callback){
         socket.emit('/stations/create');
     };
-    factory.addTrack = function (track_url,callback){
+    factory.addPlaylistToCatalog = function (playlist_url,callback){
         var results = {};
-        console.log('track url ->' + track_url);
-        console.log(sc_resolve_url + track_url + sc_client_url);
+        $http.get(sc_resolve_url + playlist_url + sc_client_url).then( function (response){
+            var tracks = response.data.tracks;
+            var len = tracks.length;
+            var results= {};
+            results.tracks = [];
+            results.err = [];
+            // callback(tracks);
+            for (var i=0; i < len; i++){
+                if(tracks[i].streamable){
+                    results.tracks.push(tracks[i]);
+                    socket.emit('/stations/addTrackToCatalog',{track : tracks[i]});
+                }else{
+                    results.err.push(tracks[i]);
+                }
+            }
+            callback(results);
+        });
+    };
+    factory.addTrackToCatalog = function (track_url, callback){
+        var results = {};
         $http.get(sc_resolve_url + track_url + sc_client_url).then( function (response){
             var track_info = response.data;
-            console.log('got info -> ');
-            console.log(track_info);
             if(track_info.streamable){
-                console.log('refining then emitting..');
-                //refine track_info object and save it into playlist,
-                //then emit to server
                 track_info.track_source = 'soundcloud';
                 track_info.sc_id = track_info.id;
                 track_info.sc_user_id = track_info.user_id;
                 track_info.sc_user_url = track_info.user.permalink_url;
                 track_info.sc_username = track_info.user.username;
                 results.new_track = track_info;
-                // console.log(track_info);
-
-                socket.emit('/stations/addTrack',{track : track_info});
+                socket.emit('/stations/addTrackToCatalog',{track : track_info});
             }else{
                 results.err = 'This soundcloud user has set streaming to false for this track :/';
             }
             callback(results);
         });
+    };
+    factory.addTrackToPlaylist = function (track,callback){
+        socket.emit('/stations/addTrackToPlaylist',{track : track});
     };
     factory.getStream = function (track_info,callback){
         var smOptions = {
@@ -45,7 +59,6 @@ togethear_app.factory('StationFactory',function ($http){
         });
     };
     factory.request_playlist = function (){
-        console.log('emitting request..');
         socket.emit('/stations/getPlaylist',{});
     };
     factory.request_stations = function (callback){
@@ -59,7 +72,6 @@ togethear_app.factory('StationFactory',function ($http){
             playlist : playlist,
             current_position : current_position
         };
-        console.log('emitting sync all with next_song = ' + next_song);
         socket.emit('/stations/sync_all',update);
     };
     // factory.request_sync = function ()

@@ -1,11 +1,12 @@
 var mongoose = require('mongoose');
 var StationSchema = new mongoose.Schema({
+    open : {type : Boolean, default : false},
     dj : {type : mongoose.Schema.Types.ObjectId, ref: 'User'},
     dj_username : String,
     dj_socket_id : String,
     title : String,
     description : String,
-    artwork_url : String,
+    artwork_url : {type : String, default : "javascripts/assets/no-image.jpg"},
     playlist : [{
         title : String,
         artwork_url : String,

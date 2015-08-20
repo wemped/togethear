@@ -10,6 +10,8 @@ module.exports = (function (){
             new_station.dj = user_id;
             new_station.dj_username = username;
             new_station.dj_socket_id = socket.id;
+            new_station.title = username + "'s Station";
+            new_station.description = 'Enter a description';
             new_station.save(function (err,station){
                 if (err){
                     console.log(err);
@@ -25,6 +27,35 @@ module.exports = (function (){
                     }
                 );
             });
+        },
+        close_station : function (data,socket,io){
+            station_id = socket.request.session.station_id;
+            Station.findByIdAndUpdate(station_id,{open : false},
+                                                        {safe : true,upsert : true, new : true},
+                function (err, station){
+                    if (err){
+                        console.log(err);
+                    }
+                    console.log('CLOSED STATION!!!');
+                    io.to(station_id).emit('/listens/dj_left');
+                });
+        },
+        toggleBroadcast : function (req,res,io){
+            station_id = req.session.station_id;
+            var status = !req.body.broadcasting;
+            Station.findByIdAndUpdate(station_id,
+                                                      {open : status},
+                                                      {safe : true, upsert : true, new : true},
+                function (err,station){
+                    if (err){
+                        cosole.log(err);
+                        return;
+                    }
+                    res.json({status : station.open});
+                    if (!station.open){
+                        io.to(station_id).emit('/listens/dj_left');
+                    }
+                });
         },
         /**/
         addTrackToCatalog : function(data,socket,io){
@@ -53,7 +84,7 @@ module.exports = (function (){
                         return;
                     }
                     socket.emit ('/stations/playlist_update', {playlist : station.playlist, my_station : true});
-                    io.to(station_id).emit('/listens/playlist_update',{playlist : station.playlist, my_station : false, dj_socket_id : socket.id});
+                    io.to(station_id).emit('/listens/playlist_update',{playlist : station.playlist, my_station : false, dj_socket_id : socket.id,station_id : station_id});
                 });
         },
         get_my_station : function (req,res){
@@ -75,6 +106,7 @@ module.exports = (function (){
             //dj calls this, station_id will be in the session
             //get room
             //update people in the room
+            data.station_id = station_id;
             io.to(station_id).emit('/listens/sync_all',data);
             //update db, if data.next_song is true, take old song
                 //and put it in backlog
@@ -95,6 +127,19 @@ module.exports = (function (){
                     });
                 });
             }
+        },
+        edit_station : function (req,res){
+            var station_id = req.session.station_id;
+            var data = req.body;
+            Station.findByIdAndUpdate(station_id,
+                                                      {title : data.title, description : data.description, artwork_url : data.artwork_url},
+                                                      {safe : true, upsert : true, new : true},
+                function (err,station){
+                    if (err){
+                        console.log(err);
+                    }
+                }
+            );
         }
     };
 })();

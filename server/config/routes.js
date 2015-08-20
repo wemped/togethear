@@ -38,6 +38,9 @@ module.exports = (function (app,io){
         socket.on('/djs/sync_all', function (data){
             Djs.sync_all_listeners(data,socket,io);
         });
+        socket.on('disconnect', function (data){
+            Djs.close_station(data,socket,io);
+        });
         /*LISTENER ROUTES*/
         socket.on('/listens/getPlaylist',function (data){
             Listens.getPlaylist(data,socket,io);
@@ -54,6 +57,12 @@ module.exports = (function (app,io){
     app.get('/stations',function (req,res){
         console.log('got get');
         Listens.getAllStations(req,res);
+    });
+    app.post('/djs/toggleBroadcast', function (req,res){
+        Djs.toggleBroadcast(req,res,io);
+    });
+    app.post('/djs/edit_station', function (req,res){
+        Djs.edit_station(req,res);
     });
     app.get('/djs/get_my_station', function (req,res){
         Djs.get_my_station(req,res);

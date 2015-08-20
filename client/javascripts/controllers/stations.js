@@ -1,5 +1,6 @@
 togethear_app.controller('StationController',function ($scope,StationFactory,$location,$routeParams){
     var my = this;
+    var broadcasting = false;
     // var first_run = true;
     var sc_client_id = '28528ad11d2c88f57b45b52a5a0f2c83';
     var playing = false;
@@ -21,6 +22,22 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
     my.stations = [];
     my.playlist = [];
     my.err = '';
+    my.station_title = '';
+    my.station_description = '';
+    my.station_artwork_url = '';
+
+    my.toggleBroadcast = function(){
+        StationFactory.toggleBroadcast(broadcasting,function (response){
+            console.log(response);
+            if (response.status){
+                $('#toggleBroadcast').addClass('broadcasting');
+                broadcasting = true;
+            }else{
+                $('#toggleBroadcast').removeClass('broadcasting');
+                broadcasting = false;
+            }
+        });
+    };
     my.next_song = function (){
         console.log('next_song!');
         nextSong(true);
@@ -125,11 +142,35 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
         console.log(now_playing.currentTime);
         StationFactory.sync_all(my.playlist,now_playing.currentTime,next_song);
     };
+    my.edit_title = function (){
+        var new_title = prompt("Title for your station : ");
+        if (new_title){
+            StationFactory.edit_station(new_title,my.station_description,my.station_artwork_url);
+            my.station_title = new_title;
+        }
+    };
+    my.edit_description = function (){
+        var new_description = prompt("Description for your station : ");
+        if (new_description){
+            StationFactory.edit_station(my.station_title,new_description,my.station_artwork_url);
+            my.station_description = new_description;
+        }
+    };
+    my.edit_artwork = function (){
+        var new_artwork_url = prompt("Artwork URL for your station : ");
+        if (new_artwork_url){
+            StationFactory.edit_station(my.station_title, my.station_description, new_artwork_url);
+            my.station_artwork_url = new_artwork_url;
+        }
+    };
     var initialize_station = function (){
         StationFactory.get_my_station( function (station){
             console.log(station);
             my.playlist = station.playlist;
             my.catalog = station.catalog;
+            my.station_title = station.title;
+            my.station_description = station.description;
+            my.station_artwork_url = station.artwork_url;
             if (my.playlist[0]){
                 var elem = document.getElementById('audio');
                 now_playing = elem;

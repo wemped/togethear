@@ -61,6 +61,9 @@ socket.on('/listens/playlist_update', function (data){
         $listen_scope.lC.update_playlist(data);
     }
 });
+socket.on('/listens/dj_left', function (data){
+  console.log("CURRENT STATION CLOSED");
+});
 
 /*Angular Routes*/
 togethear_app.config(function ($routeProvider){

@@ -3,8 +3,12 @@ togethear_app.factory('StationFactory',function ($http){
     var sc_client_id = '28528ad11d2c88f57b45b52a5a0f2c83';
     var sc_resolve_url = "http://api.soundcloud.com/resolve.json?url=";
     var sc_client_url = "&client_id=" + sc_client_id;
-    factory.create = function (callback){
-        socket.emit('/stations/create');
+
+    factory.toggleBroadcast = function (broadcasting,callback){
+        console.log('sending broadcasting = ' + broadcasting);
+        $http.post('/djs/toggleBroadcast', {broadcasting : broadcasting}).then( function(response){
+            callback(response.data);
+        });
     };
     factory.addPlaylistToCatalog = function (playlist_url,callback){
         var results = {};
@@ -75,6 +79,9 @@ togethear_app.factory('StationFactory',function ($http){
             current_position : current_position
         };
         socket.emit('/djs/sync_all',update);
+    };
+    factory.edit_station = function (new_title,description,artwork_url){
+        $http.post('/djs/edit_station',{title : new_title, description : description, artwork_url : artwork_url});
     };
     return factory;
 });

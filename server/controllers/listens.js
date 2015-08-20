@@ -27,7 +27,7 @@ module.exports = (function (){
 
         /*Upon arriving at the main page, we should get neccessary information to show all the active stations*/
         getAllStations : function (req,res){
-            var query = Station.find({}).select('dj dj_username title description artwork_url');
+            var query = Station.find({open : true}).select('dj dj_username title description artwork_url');
             query.exec(function (err,stations){
                 res.json(stations);
             });

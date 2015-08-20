@@ -1,5 +1,26 @@
+
+
+<link href='../styles/css/my_station.css' type='text/css' rel='stylesheet' />
 <div ng-controller = 'StationController as sC' id='StationController'>
-    <h2>Playlist Name</h2>
+    <i class="tiny material-icons" ng-click='sC.edit_artwork()' id='edit_artwork'>
+        settings
+    </i>
+    <img ng-src="{{sC.station_artwork_url}}" />
+    <h2>
+        <i class="tiny material-icons" ng-click='sC.edit_title()' id='edit_title'>
+            settings
+        </i>
+        <span ng-bind='sC.station_title'></span>
+        <i class="small material-icons" ng-click='sC.toggleBroadcast()' id='toggleBroadcast'>
+            power_settings_new
+        </i>
+    </h2>
+    <p>
+        <i class="tiny material-icons" ng-click='sC.edit_description()' id='edit_description'>
+            settings
+        </i>
+        <span ng-bind='sC.station_description'></span>
+    </p>
     <div class="row">
         <div class="col s6">
             <input type='text' placeholder='SoundCloud Song URL' ng-model='sC.trackUrl' />

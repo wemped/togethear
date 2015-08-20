@@ -53,7 +53,7 @@ module.exports = (function (){
                         return;
                     }
                     socket.emit ('/stations/playlist_update', {playlist : station.playlist, my_station : true});
-                    io.to(station_id).emit('/listens/playlist_update',{playlist : station.playlist, my_station : false, dj_socket_id : socket.id});
+                    io.to(station_id).emit('/listens/playlist_update',{playlist : station.playlist, my_station : false, dj_socket_id : socket.id,station_id : station_id});
                 });
         },
         get_my_station : function (req,res){
@@ -75,6 +75,7 @@ module.exports = (function (){
             //dj calls this, station_id will be in the session
             //get room
             //update people in the room
+            data.station_id = station_id;
             io.to(station_id).emit('/listens/sync_all',data);
             //update db, if data.next_song is true, take old song
                 //and put it in backlog

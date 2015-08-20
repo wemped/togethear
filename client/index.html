@@ -9,20 +9,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
-	<div class="container">
-    <!-- Navbar and stuff -->
-	    <div ng-controller = 'UserController as uC' id='UserController'>
-	        <div ng-view=""></div>
-	    </div>
-   	</div>
-    <!-- Player footer -->
-    <div id="footer">
-    	<div class="song-info" ng-show="showFooter">
-    		<h6>Song Title</h6>
-    	</div>
-	    <div class="line-container" id="playerbar">
-	    </div>
-	</div>
+    <header>
+        <!-- Navbar and stuff -->
+    </header>
+    <div  ng-controller='ListenController as lC' id='ListenController'>
+        <main>
+            <div ng-controller = 'UserController as uC' id='UserController'>
+                <div class="container">
+                        <div ng-view=""></div>
+                </div>
+            </div>
+       </main>
+        <!-- Player footer -->
+        <footer id="footer" class='page-footer'>
+            <audio id='audio'></audio>
+            <div class='row'>
+                <div class="song-info">
+                    <h6>{{lC.now_playing_info.title}}</h6>
+                </div>
+                <div class="line-container" id="playerbar"></div>
+            </div>
+        </footer>
+    </div>
 </body>
 <!-- Spotify -->
 <script src="//connect.soundcloud.com/sdk-2.0.0.js"></script>
@@ -38,16 +46,19 @@ var togethear_app = angular.module('togethear-app',['ngRoute']);
 var line = new ProgressBar.Line('#playerbar', {
 	color: '#FF00FF'
 });
-//Load Controllers and Factories//
+
 </script>
 <!-- Materialize javascript -->
 <script type="text/javascript" src="./styles/js/materialize.min.js"></script>
+<!-- //Load Controllers and Factories// -->
 <script src="./javascripts/factories/listen.js"></script>
 <script src="./javascripts/controllers/listens.js"></script>
 <script src="./javascripts/factories/user.js"></script>
 <script src="./javascripts/controllers/users.js"></script>
 <script src="./javascripts/factories/station.js"></script>
 <script src="./javascripts/controllers/stations.js"></script>
+<!-- <script src="./javascripts/controllers/players.js"></script> -->
+<!-- <script src="./javascripts/services/player_service.js"></script> -->
 <script src="./javascripts/initialize.js"></script>
 <script src="./javascripts/routes.js"></script>
 <script type="text/javascript">

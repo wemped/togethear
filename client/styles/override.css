@@ -6,12 +6,6 @@ body {
 	padding: 0;
 	margin: 0;
 }
-.info-box {
-	background-color: silver;
-}
-.info-box:hover {
-	background-color: yellow;
-}
 #footer {
 	position: fixed;
 	bottom: 0;
@@ -22,3 +16,9 @@ body {
 	background-color: silver;
 	width: 100%
 }
+
+/* index page */
+/*body {
+	background-image: url('../javascripts/assets/background.png');
+	background-size: cover;
+}*/

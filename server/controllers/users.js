@@ -61,6 +61,10 @@ module.exports = (function (){
                     socket.emit('/users/login_response',response);
                 }
             });
+        },
+        chat: function(data,socket,io){
+            console.log(data);
+            io.to(data.station).emit('/users/newMsg', {name: data.name, content: data.content, user: data.user});
         }
     };
 })();

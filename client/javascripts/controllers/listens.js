@@ -1,4 +1,4 @@
-togethear_app.controller('ListenController', function ($scope, ListenFactory,$location,$routeParams){
+togethear_app.controller('ListenController', function ($scope, ListenFactory,$location,$routeParams,chatService){
     var now_playing;
     var now_playing_info;
     var station_id = $routeParams.id;
@@ -6,11 +6,13 @@ togethear_app.controller('ListenController', function ($scope, ListenFactory,$lo
     var first_run = true;
 
     var my=this;
+    my.chatService = chatService;
     my.playlist = [];
     my.offset = 0;
     my.join_station = function (){
         //join room, get playlist
         ListenFactory.join_station(station_id,dj_socket_id);
+        my.chatService.station = station_id;
     };
     my.get_station = function (){
         ListenFactory.get_station(station_id, function (station){

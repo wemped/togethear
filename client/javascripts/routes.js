@@ -15,6 +15,10 @@ socket.on('/users/login_response',function (data){
     $user_scope.login_answer(data);
 });
 
+socket.on('/users/newMsg',function (data){
+  $user_scope.new_message(data);
+})
+
 socket.on('/listens/sync_all', function (data){
     var listen_controller_elem = angular.element($('#ListenController'));
     $listen_scope = listen_controller_elem.scope();

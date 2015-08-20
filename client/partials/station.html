@@ -9,4 +9,9 @@
     <button ng-click='lC.join_station()'>Join station!</button>
     <button ng-click='lC.request_sync()'>sync</button>
     <audio id='audio'></audio>
+    <div>
+        <p ng-repeat="message in uC.messages"><span ng-bind="message.name"></span>: <span ng-bind="message.content"></span></p>
+        <input type="text" ng-model="uC.newMessage">
+        <button ng-click="uC.chat()">Post</button>
+    </div>
 </div>

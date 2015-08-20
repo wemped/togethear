@@ -1,6 +1,10 @@
-togethear_app.controller('UserController',function ($scope,UserFactory,$location){
+togethear_app.controller('UserController',function ($scope,UserFactory,$location,chatService){
     var my = this;
-    $scope.visibility = 'hidden';
+    my.chatService = chatService;
+    my.messages = [];
+    UserFactory.fetchSession(function (data) {
+        my.chatService.user = data;
+    });
     my.err = '';
     my.user_login_page = function (){
         $location.path('/login');
@@ -19,9 +23,25 @@ togethear_app.controller('UserController',function ($scope,UserFactory,$location
         if (response.err){
             my.err = response.err;
         }else{
+            UserFactory.fetchSession(function (data) {
+                my.chatService.user = data;
+            });
             $location.path('/dashboard');
             my.err = '';
         }
         $scope.$apply();
     };
+    my.chat = function (){
+        if(my.newMessage.length > 0){
+            UserFactory.chat(my.chatService.user, my.newMessage, my.chatService.station, function(data) {
+                my.messages = data;
+                my.newMessage = "";
+            });
+        }
+    };
+    my.new_message = function(msg) {
+        UserFactory.new_message(msg, function(data) {
+            my.messages = data;
+        })
+    }
 });

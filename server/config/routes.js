@@ -9,7 +9,6 @@ module.exports = (function (app,io){
         console.log('CONNECTION session id -> ' + socket.request.session.id);
         /*USER ROUTES*/
         socket.on('/users/login',function (data){
-            console.log(data);
             // socket.emit('login_success',data);
             Users.login(data,socket,io);
         });
@@ -17,6 +16,10 @@ module.exports = (function (app,io){
             console.log(data);
             Users.register(data,socket,io);
         });
+        socket.on('/users/chat', function (data){
+            console.log('server message data: ',data);
+            Users.chat(data,socket,io);
+        })
         /*DJ ROUTES*/
         socket.on('/djs/create_station',function (data){
             console.log('got a create station');
@@ -54,6 +57,9 @@ module.exports = (function (app,io){
     });
     app.get('/djs/get_my_station', function (req,res){
         Djs.get_my_station(req,res);
+    });
+    app.get('/session', function (req,res){
+        res.json({name: req.session.username, _id: req.session.user_id});
     });
     app.post('/listens/get_station',function (req,res){
         Listens.getStation(req,res);

@@ -1,5 +1,6 @@
 togethear_app.controller('StationController',function ($scope,StationFactory,$location,$routeParams){
     var my = this;
+    var broadcasting = false;
     // var first_run = true;
     var sc_client_id = '28528ad11d2c88f57b45b52a5a0f2c83';
     var playing = false;
@@ -21,6 +22,19 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
     my.stations = [];
     my.playlist = [];
     my.err = '';
+
+    my.toggleBroadcast = function(){
+        StationFactory.toggleBroadcast(broadcasting,function (response){
+            console.log(response);
+            if (response.status){
+                $('#toggleBroadcast').addClass('broadcasting');
+                broadcasting = true;
+            }else{
+                $('#toggleBroadcast').removeClass('broadcasting');
+                broadcasting = false;
+            }
+        });
+    };
     my.next_song = function (){
         console.log('next_song!');
         nextSong(true);

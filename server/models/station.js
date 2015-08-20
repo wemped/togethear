@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var StationSchema = new mongoose.Schema({
+    open : {type : Boolean, default : false},
     dj : {type : mongoose.Schema.Types.ObjectId, ref: 'User'},
     dj_username : String,
     dj_socket_id : String,

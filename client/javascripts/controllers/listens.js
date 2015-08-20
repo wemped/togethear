@@ -14,6 +14,7 @@ togethear_app.controller('ListenController', function ($scope, ListenFactory,$lo
 
     my.join_station = function (){
         //join room, get playlist
+        $('#footer').css('visibility','visible').hide().fadeIn('slow');
         my.playlist = my.browsing_playlist;
         dj_socket_id = browsing_dj_socket_id;
         ListenFactory.join_station(station_id,dj_socket_id);
@@ -77,6 +78,7 @@ togethear_app.controller('ListenController', function ($scope, ListenFactory,$lo
         if(data.next_song){
             now_playing.src = my.playlist[0].stream_url + "?client_id=28528ad11d2c88f57b45b52a5a0f2c83";
             my.now_playing_info = my.playlist[0];
+            // $scope.$apply();
             now_playing.play();
         }else{
             if(data.current_position){
@@ -91,6 +93,9 @@ togethear_app.controller('ListenController', function ($scope, ListenFactory,$lo
                     now_playing.play();
                 }
             }
+        }
+        if(!my.now_playing_info.artwork_url){
+            my.now_playing_info.artwork_url = '/javascripts/assets/no-image.jpg';
         }
         $scope.$apply();
     };

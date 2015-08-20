@@ -6,7 +6,8 @@
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
 <link type="text/css" rel="stylesheet" href="./styles/css/materialize.min.css"  media="screen,projection"/>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="./styles/override.css">
+<!-- <link rel="stylesheet" type="text/css" href="./styles/css/override.css"> -->
+<link rel='stylesheet' type='text/css' href='./styles/css/index.css'>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body ng-controller = 'UserController as uC' id="UserController">
@@ -18,14 +19,21 @@
             <div ng-view=""></div>
        </main>
         <!-- Player footer -->
-        <footer id="footer" class='page-footer'>
+        <footer id="footer" class='page-footer hidden'>
             <audio id='audio'></audio>
-            <div class='row'>
+            <!-- <div class='row'> -->
                 <div class="song-info">
-                    <h6>{{lC.now_playing_info.title}}</h6>
+                    <div id='now_playing_img_container'>
+                        <img ng-src='{{lC.now_playing_info.artwork_url}}' class='circle'/>
+                    </div>
+                    <span ng-bind='lC.now_playing_info.title' class='now_playing_title light'></span>
+                    <a ng-href = '{{lC.now_playing_info.sc_user_url}}'>
+                        <span ng-bind='lC.now_playing_info.sc_username' class='now_playing_sc_user light'></span>
+                    </a>
+                    <i class="material-icons small now_playing_volume">volume_mute</i>
                 </div>
                 <div class="line-container" id="playerbar"></div>
-            </div>
+            <!-- </div> -->
         </footer>
     </div>
 </body>

@@ -58,6 +58,9 @@ module.exports = (function (app,io){
     app.post('/djs/toggleBroadcast', function (req,res){
         Djs.toggleBroadcast(req,res,io);
     });
+    app.post('/djs/edit_station', function (req,res){
+        Djs.edit_station(req,res);
+    });
     app.get('/djs/get_my_station', function (req,res){
         Djs.get_my_station(req,res);
     });

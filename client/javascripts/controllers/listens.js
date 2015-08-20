@@ -1,36 +1,42 @@
 togethear_app.controller('ListenController', function ($scope, ListenFactory,$location,$routeParams){
+    var my=this;
     var now_playing;
     var now_playing_info;
     var station_id = $routeParams.id;
     var dj_socket_id;
+    var browsing_dj_socket_id;
     var first_run = true;
 
-    var my=this;
+    my.browsing_playlist = [];
     my.playlist = [];
     my.offset = 0;
+
     my.join_station = function (){
         //join room, get playlist
+        my.playlist = my.browsing_playlist;
+        dj_socket_id = browsing_dj_socket_id;
         ListenFactory.join_station(station_id,dj_socket_id);
+        if(my.playlist[0]){
+            var elem = document.getElementById('audio');
+            elem.src = my.playlist[0].stream_url + "?client_id=28528ad11d2c88f57b45b52a5a0f2c83";
+            elem.load();
+            now_playing = elem;
+            now_playing_info = my.playlist[0];
+            var interval = now_playing_info.duration / 400000 ;
+            var playbar_pos;
+            var playbar = function(){
+                playbar_pos = Math.round(now_playing.currentTime / interval) * 0.0025;
+                line.animate(playbar_pos, {duration: 0});
+            };
+        now_playing.addEventListener('timeupdate',playbar);
+        }
+        // $scope.$apply();
     };
     my.get_station = function (){
         ListenFactory.get_station(station_id, function (station){
             console.log(station);
-            my.playlist = station.playlist;
-            dj_socket_id = station.dj_socket_id;
-            if(my.playlist[0]){
-                var elem = document.getElementById('audio');
-                elem.src = my.playlist[0].stream_url + "?client_id=28528ad11d2c88f57b45b52a5a0f2c83";
-                elem.load();
-                now_playing = elem;
-                now_playing_info = my.playlist[0];
-                var interval = now_playing_info.duration / 400000 ;
-                var playbar_pos;
-                var playbar = function(){
-                    playbar_pos = Math.round(now_playing.currentTime / interval) * 0.0025;
-                    line.animate(playbar_pos, {duration: 0});
-                };
-            now_playing.addEventListener('timeupdate',playbar);
-            }
+            my.browsing_playlist = station.playlist;
+            browsing_dj_socket_id = station.dj_socket_id;
         });
     };
     my.update_playlist = function (data){
@@ -77,6 +83,9 @@ togethear_app.controller('ListenController', function ($scope, ListenFactory,$lo
         $scope.$apply();
     };
     $scope.$on("$routeChangeSuccess", function ($currentRoute, $previousRoute){
-        my.get_station();
+        station_id = $routeParams.id;
+        if (station_id){
+            my.get_station();
+        }
     });
 });

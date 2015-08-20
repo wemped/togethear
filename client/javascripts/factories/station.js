@@ -80,5 +80,8 @@ togethear_app.factory('StationFactory',function ($http){
         };
         socket.emit('/djs/sync_all',update);
     };
+    factory.edit_station = function (new_title,description,artwork_url){
+        $http.post('/djs/edit_station',{title : new_title, description : description, artwork_url : artwork_url});
+    };
     return factory;
 });

@@ -10,6 +10,8 @@ module.exports = (function (){
             new_station.dj = user_id;
             new_station.dj_username = username;
             new_station.dj_socket_id = socket.id;
+            new_station.title = username + "'s Station";
+            new_station.description = 'Enter a description';
             new_station.save(function (err,station){
                 if (err){
                     console.log(err);
@@ -125,6 +127,19 @@ module.exports = (function (){
                     });
                 });
             }
+        },
+        edit_station : function (req,res){
+            var station_id = req.session.station_id;
+            var data = req.body;
+            Station.findByIdAndUpdate(station_id,
+                                                      {title : data.title, description : data.description, artwork_url : data.artwork_url},
+                                                      {safe : true, upsert : true, new : true},
+                function (err,station){
+                    if (err){
+                        console.log(err);
+                    }
+                }
+            );
         }
     };
 })();

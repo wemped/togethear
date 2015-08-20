@@ -1,5 +1,13 @@
+
+
+<link href='../styles/css/my_station.css' type='text/css' rel='stylesheet' />
 <div ng-controller = 'StationController as sC' id='StationController'>
-    <h2>Playlist Name</h2>
+    <h2>
+        Playlist Name
+        <i class="small material-icons" ng-click='sC.toggleBroadcast()' id='toggleBroadcast'>
+            power_settings_new
+        </i>
+    </h2>
     <div class="row">
         <div class="col s6">
             <input type='text' placeholder='SoundCloud Song URL' ng-model='sC.trackUrl' />

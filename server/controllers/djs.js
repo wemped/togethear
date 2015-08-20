@@ -26,6 +26,35 @@ module.exports = (function (){
                 );
             });
         },
+        close_station : function (data,socket,io){
+            station_id = socket.request.session.station_id;
+            Station.findByIdAndUpdate(station_id,{open : false},
+                                                        {safe : true,upsert : true, new : true},
+                function (err, station){
+                    if (err){
+                        console.log(err);
+                    }
+                    console.log('CLOSED STATION!!!');
+                    io.to(station_id).emit('/listens/dj_left');
+                });
+        },
+        toggleBroadcast : function (req,res,io){
+            station_id = req.session.station_id;
+            var status = !req.body.broadcasting;
+            Station.findByIdAndUpdate(station_id,
+                                                      {open : status},
+                                                      {safe : true, upsert : true, new : true},
+                function (err,station){
+                    if (err){
+                        cosole.log(err);
+                        return;
+                    }
+                    res.json({status : station.open});
+                    if (!station.open){
+                        io.to(station_id).emit('/listens/dj_left');
+                    }
+                });
+        },
         /**/
         addTrackToCatalog : function(data,socket,io){
             station_id = socket.request.session.station_id;

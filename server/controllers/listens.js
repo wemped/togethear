@@ -27,8 +27,15 @@ module.exports = (function (){
 
         /*Upon arriving at the main page, we should get neccessary information to show all the active stations*/
         getAllStations : function (req,res){
-            var query = Station.find({open : true}).select('dj dj_username title description artwork_url');
+            var query = Station.find({open : true}).select('dj dj_username title description artwork_url playlist');
             query.exec(function (err,stations){
+                for (var i=0; i<stations.length; i++){
+                    if (stations[i].playlist[0]){
+                        console.log('has a song');
+                        stations[i].now_playing = stations[i].playlist[0];
+                        stations.playlist = [];
+                    }
+                }
                 res.json(stations);
             });
         },

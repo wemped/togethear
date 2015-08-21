@@ -54,8 +54,7 @@ module.exports = (function (app,io){
         });
     });
     /*Http*/
-    app.get('/stations',function (req,res){
-        console.log('got get');
+    app.get('/listens/all',function (req,res){
         Listens.getAllStations(req,res);
     });
     app.post('/djs/toggleBroadcast', function (req,res){

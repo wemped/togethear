@@ -11,7 +11,7 @@ togethear_app.controller('UserController',function ($scope,UserFactory,$location
     };
     my.dj_login_page = function (){
         $location.path('/dj_login');
-    }
+    };
     my.login = function (){
         UserFactory.login(my.log);
     };
@@ -42,6 +42,7 @@ togethear_app.controller('UserController',function ($scope,UserFactory,$location
     my.new_message = function(msg) {
         UserFactory.new_message(msg, function(data) {
             my.messages = data;
-        })
-    }
+        });
+        $scope.$apply();
+    };
 });

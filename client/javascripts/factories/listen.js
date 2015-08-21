@@ -6,10 +6,11 @@ togethear_app.factory('ListenFactory',function ($http){
             callback(response.data);
         });
     };
-    factory.request_sync = function (station_id,dj_socket_id){
+    factory.request_sync = function (station_id,dj_socket_id,calibration){
         var data = {
             station_id : station_id,
-            dj_socket_id : dj_socket_id
+            dj_socket_id : dj_socket_id,
+            calibration : calibration
         };
         socket.emit('/listens/request_sync',data);
     };

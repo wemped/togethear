@@ -44,7 +44,8 @@ module.exports = (function (){
             socket.join(data.station_id);
             var dj_socket_id = data.dj_socket_id;
             var info = {
-                requester_socket_id : socket.id
+                requester_socket_id : socket.id,
+                joining : true
             };
             io.to(dj_socket_id).emit('/stations/sync_single',info);
         },

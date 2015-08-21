@@ -95,3 +95,7 @@
 #main-content .station-img img{
     max-width: 100%;
 }
+.chat{
+    overflow-y: auto;
+    height : 400px;
+}

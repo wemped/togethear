@@ -19,7 +19,7 @@ module.exports = (function (app,io){
         socket.on('/users/chat', function (data){
             console.log('server message data: ',data);
             Users.chat(data,socket,io);
-        })
+        });
         /*DJ ROUTES*/
         socket.on('/djs/create_station',function (data){
             console.log('got a create station');

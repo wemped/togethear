@@ -219,6 +219,7 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
     my.new_msg = function (data){
         console.log(data);
         my.messages.push(data);
+        $scope.$apply();
     };
     var initialize_station = function (){
         StationFactory.get_my_station( function (station){

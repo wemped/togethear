@@ -75,8 +75,8 @@ nav{
     border : 2px solid purple;
 
 }
-    #main-content > div > div.col.s12.m4.center.playlist > div:nth-child(2) {
-        background-color: #2A2826;
+    div.playlist > div:nth-child(2) {
+        background-color: black;
         color: purple;
         padding: 10px 5px 10px 5px;
         margin: 0 5px 20px 5px;

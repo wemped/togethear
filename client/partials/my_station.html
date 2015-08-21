@@ -49,13 +49,21 @@
 
     <div class='container' id='main-content'>
         <div class='row'>
-            <div class='col s12 m4 center playlist'>
-                <h4>Playlist</h4>
-                <div class='playlist-track' ng-repeat='track in sC.playlist'>
-                    <img class='circle' ng-src='{{track.artwork_url}}' />
-                    <p>
-                        <span ng-bind='track.title'>
-                    </p>
+            <div class='col s12 m4 center'>
+                <div class="playlist">
+                    <h4>Playlist</h4>
+                    <div class='playlist-track' ng-repeat='track in sC.playlist'>
+                        <img class='circle' ng-src='{{track.artwork_url}}' />
+                        <p>
+                            <span ng-bind='track.title'>
+                        </p>
+                    </div>
+                </div>
+                <h4>Chat</h4>
+                <div class='left-align chat'>
+                    <div class='message' ng-repeat='message in sC.messages'>
+                        <p><span ng-bind='message.name'></span> : <span ng-bind='message.content'></span>
+                    </div>
                 </div>
             </div>
             <div class='col s12 m8 center'>
@@ -73,11 +81,6 @@
                 <button class="btn-floating purple" ng-click='sC.addTrackToCatalog()'>+</button>
                 <input type='text' placeholder='SoundCloud Playlist URL' ng-model='sC.playlistUrl' />
                 <button class="btn-floating purple" ng-click='sC.addPlaylistToCatalog()'>+</button>
-            </div>
-        </div>
-        <div class='chat'>
-            <div class='message' ng-repeat='message in sC.messages'>
-                <p><span ng-bind='message.name'></span> : <span ng-bind='message.content'></span>
             </div>
         </div>
         <p>

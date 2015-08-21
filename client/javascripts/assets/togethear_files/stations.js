@@ -15,7 +15,7 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
         if(!forced){
             $scope.$apply();
         }
-        play(true);
+        my.play(true);
     };
 
     my.catalog = [];
@@ -27,7 +27,6 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
     my.station_artwork_url = '';
 
     my.toggleBroadcast = function(){
-        play(false);
         StationFactory.toggleBroadcast(broadcasting,function (response){
             console.log(response);
             if (response.status){
@@ -70,7 +69,7 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
     my.addTrackToPlaylist = function (track){
         StationFactory.addTrackToPlaylist(track);
     };
-    var play = function (next_song){
+    my.play = function (next_song){
         if (playing){
             //nuthin
         }else if (now_playing){

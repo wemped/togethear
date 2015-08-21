@@ -1,4 +1,20 @@
 <link href='../styles/css/station.css' type='text/css' rel='stylesheet' />
+<nav>
+    <div class="nav-wrapper">
+        <div class='logo-container center brand-logo light'>
+            Togethear
+        </div>
+      <ul class="right">
+        <li><a href='#/dashboard'>Dashboard</a></li>
+        <li ng-if="uC.logged_in" ng-click='uC.logout()'>
+            <a href='#/'>Logout</a>
+        </li>
+        <li ng-if="!uC.logged_in" ng-click='uC.logout()'>
+            <a href='#/'>Login</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 <div class="container" id="station">
     <a href='#/dashboard'>Dashboard</a>
     <div class="row">

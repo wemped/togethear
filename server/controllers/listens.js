@@ -41,6 +41,7 @@ module.exports = (function (){
         },
         /*While on a station's page, we can click join, and then join the socket room and request a sync*/
         join_station : function(data,socket,io){
+            console.log('sending dj sync_single with joining true');
             socket.join(data.station_id);
             var dj_socket_id = data.dj_socket_id;
             var info = {
@@ -51,8 +52,13 @@ module.exports = (function (){
         },
         /*While connected to a station, and the listener has requested a sync we need to pass that to the dj*/
         request_sync : function (data,socket,io){
+            console.log('requesting sync with calibration = ' + data.calibration);
             data.requester_socket_id = socket.id;
             io.to(data.dj_socket_id).emit('/stations/sync_single',data);
+        },
+        guide_calibration : function(data,socket,io){
+            console.log('guiding calibration');
+            io.to(data.requester_socket_id).emit('/listens/calibration',data);
         }
     };
 })();

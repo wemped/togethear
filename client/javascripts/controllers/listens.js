@@ -13,6 +13,7 @@ togethear_app.controller('ListenController', function ($scope, ListenFactory,$lo
     my.playlist = []; //playlist for the station we are in
     my.offset = 100; //milisecond offset for song position
     my.all_stations = [];
+    my.radio_info = {};
 
     /*
         Shows footer player
@@ -44,6 +45,7 @@ togethear_app.controller('ListenController', function ($scope, ListenFactory,$lo
         ListenFactory.get_station(station_id, function (station){
             my.browsing_playlist = station.playlist;
             browsing_dj_socket_id = station.dj_socket_id;
+            my.radio_info = {title: station.title, artwork: station.artwork_url, dj: station.dj_username};
         });
     };
     /*

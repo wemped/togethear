@@ -1,0 +1,81 @@
+#station {
+	margin-top: 20px;
+	width: 90%;
+	padding-bottom: 60px;
+}
+.join-button, .sync-button{
+    border : black 2px solid;
+    border-radius: 20px;
+    height : 45px;
+    width: 60px;
+    padding: 0px;
+}
+.join-button i, .sync-button i {
+    font-size: 2.0rem;
+}
+.join-button {
+	margin-right: 10%;
+}
+.sync-button {
+	margin-left: 10%;
+}
+div.playlist{
+    border : black solid 1px;
+    padding: 0px;
+}
+div.playlist-track{
+    text-align: left;
+    display: block;
+    margin : 5px 10px 5px 10px;
+    border : 2px solid purple;
+
+}
+div.playlist p{
+    vertical-align: middle;
+    display: inline-block;
+    max-width : 80%;
+    margin: 0px;
+}
+div.playlist img{
+    vertical-align: middle;
+    display: inline-block;
+    max-width: 20%;
+    margin: 5px ;
+}
+	div.playlist > div:nth-child(2) {
+        background-color: black;
+        color: purple;
+        padding: 10px 5px 10px 5px;
+        margin: 0 5px 20px 5px;
+    }
+button.controls {
+    border: black 2px solid;
+    border-radius: 20px;
+    height: 45px;
+    width: 60px;
+    padding: 0px
+}
+div.chatbox {
+    overflow-y: auto;
+    height : 190px;
+}
+button.chat {
+	z-index: 0;
+}
+div.right-col img {
+	width: 100%
+}
+div.playlist {
+	margin-top: 60px;
+}
+h2{
+	margin-bottom: 5px;
+}
+h6 {
+	margin-top: 0;
+	padding-top: 0;
+	margin-bottom: 20px;
+}
+h6 span {
+	color: purple;
+}

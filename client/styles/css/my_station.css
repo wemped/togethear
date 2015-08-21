@@ -99,3 +99,6 @@
     overflow-y: auto;
     height : 400px;
 }
+#StationController {
+    padding-bottom: 20px;
+}

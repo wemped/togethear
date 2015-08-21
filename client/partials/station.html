@@ -1,15 +1,50 @@
-<a href='#/dashboard'>Dashboard</a>
-<input type='number' placeholder='offset (ms)' ng-model='lC.offset'/>
-<ul>
-    <li ng-repeat='track in lC.browsing_playlist'>
-        <p ng-bind='track.title'></p>
-    </li>
-</ul>
-<button ng-click='lC.join_station()'>Join station!</button>
-<button ng-click='lC.request_sync()'>sync</button>
-<!-- <audio id='audio'></audio> -->
-<div>
-    <p ng-repeat="message in uC.messages"><span ng-bind="message.name"></span>: <span ng-bind="message.content"></span></p>
-    <input type="text" ng-model="uC.newMessage">
-    <button ng-click="uC.chat()">Post</button>
+<link href='../styles/css/station.css' type='text/css' rel='stylesheet' />
+<div class="container" id="station">
+    <a href='#/dashboard'>Dashboard</a>
+    <div class="row">
+        <div class='col s12 m4 center'>
+            <h2><span ng-bind="lC.radio_info.title"></span></h2>
+            <h6>by <span ng-bind="lC.radio_info.dj"></span></h6>
+            <button class='join-button large btn-flat center white' ng-click='lC.join_station()'>
+                <i class="material-icons">
+                    library_add
+                </i>
+                JOIN
+            </button>
+            <button class='sync-button large btn-flat center white' ng-click='lC.request_sync()'>
+                <i class="material-icons">
+                    settings_input_antenna
+                </i>
+                SYNC
+            </button>
+            <div class="playlist">
+                <h4>Playlist</h4>
+                <div class='playlist-track' ng-repeat='track in lC.browsing_playlist'>
+                    <img class='circle' ng-src='{{track.artwork_url}}' />
+                    <p>
+                        <span ng-bind='track.title'>
+                    </p>
+                </div>
+            </div>
+            <h4>Offset</h4>
+            <input type='range' min="-500" max="500" onchange="updateOffset(this.value)" ng-model='lC.offset'/>
+            <h5 class="offset"><span id="off_val"></span> ms</h5>
+        </div>
+        <div class="col s12 m8 station-info center right-col">
+            <img ng-src='{{lC.radio_info.artwork}}' />
+            <h4>Chat</h4>
+            <div class="left-align chatbox">
+                <p ng-repeat="message in uC.messages"><span ng-bind="message.name"></span>: <span ng-bind="message.content"></span></p>
+            </div>
+            <input class="chat" type="text" placeholder="chat.." ng-model="uC.newMessage">
+            <button class="btn-floating purple chat" ng-click="uC.chat()">+</button>
+        </div>
+    </div>
+<!--     <button class="waves-effect waves-purple btn-flat bordered" ng-click='lC.join_station()'>Join</button>
+    <button ng-click='lC.request_sync()'>sync</button> -->
 </div>
+<script type="text/javascript">
+    function updateOffset(val) {
+        $('#off_val').html(val);
+    };
+</script>

@@ -14,7 +14,11 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
         if(!forced){
             $scope.$apply();
         }
-        play(true);
+        if(my.playlist[0]){
+            play(true);
+        }else{
+            my.toggleBroadcast();
+        }
     };
 
     my.messages = [];
@@ -81,6 +85,9 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
 
     */
     var play = function (next_song){
+        console.log(my.playlist);
+        console.log(playing);
+        console.log(now_playing);
         if (playing){
             //nuthin
         }else if (now_playing){
@@ -128,6 +135,11 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
         });
     };
     my.update_playlist = function (data){
+        if(!my.playlist[0]){
+            now_playing_info = data.playlist[0];
+            now_playing.src = data.playlist[0].stream_url + "?client_id=28528ad11d2c88f57b45b52a5a0f2c83";
+            now_playing.load();
+        }
         my.playlist = data.playlist;
         if (data.catalog){
             my.catalog = data.catalog;
@@ -216,9 +228,9 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
             my.station_title = station.title;
             my.station_description = station.description;
             my.station_artwork_url = station.artwork_url;
+            var elem = document.getElementById('audio');
+            now_playing = elem;
             if (my.playlist[0]){
-                var elem = document.getElementById('audio');
-                now_playing = elem;
                 now_playing.src = my.playlist[0].stream_url + "?client_id=28528ad11d2c88f57b45b52a5a0f2c83";
                 now_playing.load();
                 now_playing_info = my.playlist[0];

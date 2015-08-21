@@ -73,6 +73,7 @@ socket.on('/stations/newMsg', function (data){
 });
 
 socket.on('/stations/playlist_update', function (data){
+    console.log('>>stations/playlist_update');
     var station_controller_elem = angular.element($('#StationController'));
     $station_scope = station_controller_elem.scope();
      if ($station_scope){
@@ -80,6 +81,7 @@ socket.on('/stations/playlist_update', function (data){
      }
 });
 socket.on('/listens/playlist_update', function (data){
+    console.log('>>listens/playlist_update');
     var listen_controller_elem = angular.element($('#ListenController'));
     $listen_scope = listen_controller_elem.scope();
     if ($listen_scope){

@@ -48,9 +48,7 @@ togethear_app.factory('StationFactory',function ($http){
                 track_info.sc_user_id = track_info.user_id;
                 track_info.sc_user_url = track_info.user.permalink_url;
                 track_info.sc_username = track_info.user.username;
-                if(track_info.artwork_url){
-                    track_info.artwork_url = track_info.artwork_url.replace("large","badge");
-                }
+                track_info.artwork_url = track_info.artwork_url.replace("large","badge");
                 console.log(track_info);
                 results.new_track = track_info;
                 socket.emit('/djs/addTrackToCatalog',{track : track_info});

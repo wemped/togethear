@@ -18,7 +18,7 @@ togethear_app.factory('UserFactory', function($http,chatService){
     factory.chat = function(user, message, station, callback) {
         console.log('USER: ',user);
         messages.push({name: 'me', content: message});
-        socket.emit('/users/chat', {name: user.name, content: message, station: station, user: user._id, dj_socket_id : chat.dj_socket_id});
+        socket.emit('/users/chat', {name: user.name, content: message, station: station, user: user._id});
         callback(messages);
     };
     factory.new_message = function(msg, callback) {

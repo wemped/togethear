@@ -1,6 +1,7 @@
 togethear_app.controller('StationController',function ($scope,StationFactory,$location,$routeParams){
     var my = this;
     var broadcasting = false;
+    // var first_run = true;
     var sc_client_id = '28528ad11d2c88f57b45b52a5a0f2c83';
     var playing = false;
     var now_playing;
@@ -14,10 +15,9 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
         if(!forced){
             $scope.$apply();
         }
-        play(true);
+        my.play(true);
     };
 
-    my.messages = [];
     my.catalog = [];
     my.stations = [];
     my.playlist = [];
@@ -26,11 +26,7 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
     my.station_description = '';
     my.station_artwork_url = '';
 
-    /*
-        Turns broadcasting on and off
-    */
     my.toggleBroadcast = function(){
-        play(false);
         StationFactory.toggleBroadcast(broadcasting,function (response){
             console.log(response);
             if (response.status){
@@ -39,13 +35,11 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
             }else{
                 $('#toggleBroadcast').removeClass('broadcasting');
                 broadcasting = false;
-                my.pause();
             }
         });
     };
-    /*
-    */
     my.next_song = function (){
+        console.log('next_song!');
         nextSong(true);
     };
     my.addPlaylistToCatalog = function (){
@@ -75,12 +69,7 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
     my.addTrackToPlaylist = function (track){
         StationFactory.addTrackToPlaylist(track);
     };
-    /*
-        If something isn't already playing it will load the next song and play
-        ->this will send a sync to all listeners
-
-    */
-    var play = function (next_song){
+    my.play = function (next_song){
         if (playing){
             //nuthin
         }else if (now_playing){
@@ -96,6 +85,7 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
                     that.removeEventListener('timeupdate', sync_at_half,false);
                 }
             };
+            console.log('interval: ',interval);
             var playbar = function(){
                 playbar_pos = Math.round(now_playing.currentTime / interval) * 0.0025;
                 line.animate(playbar_pos, {duration: 0});
@@ -112,9 +102,6 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
         }
         playing = true;
     };
-    /*
-        Pauses track on broadcast end
-    */
     my.pause = function (){
         if(playing){
             now_playing.pause();
@@ -134,48 +121,20 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
         }
         $scope.$apply();
     };
-    /*
-        sends a sync when it was requested by a listener
-        sends a calibration when it was requested by a listener
-        sends initial sync when it was requested by a listener
-    */
     my.sync_single = function (data){
-        if (data.calibration){
-            console.log('calibration is true!');
-            var response = {};
-            for (var i=0; i<1; i++){
-                response = {
-                    current_position : now_playing.currentTime,
-                    requester_socket_id : data.requester_socket_id,
-                    calibration : true
-                };
-                socket.emit('/listens/calibration',response);
-            }
+        //just sync the song position
+        var response = {};
+        if(now_playing){
             response = {
                 current_position : now_playing.currentTime,
-                requester_socket_id : data.requester_socket_id,
-                calibration : true,
-                final : true
+                requester_socket_id : data.requester_socket_id
             };
-            socket.emit('/listens/calibration',response);
         }else{
-           var response = {};
-           if(now_playing){
-               response = {
-                   current_position : now_playing.currentTime,
-                   requester_socket_id : data.requester_socket_id
-               };
-           }else{
-               response.err = 'not playing right now';
-               //TODO
-           }
-           if (data.joining){
-               response.initial = true;
-               socket.emit('/djs/sync_single_response',response);
-           }else{
-               socket.emit('/djs/sync_single_response',response);
-           }
+            response.err = 'not playing right now';
+            //TODO
         }
+        console.log('sending single response');
+        socket.emit('/djs/sync_single_response',response);
     };
 
     my.sync_all = function (next_song){
@@ -203,10 +162,6 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
             StationFactory.edit_station(my.station_title, my.station_description, new_artwork_url);
             my.station_artwork_url = new_artwork_url;
         }
-    };
-    my.new_msg = function (data){
-        console.log(data);
-        my.messages.push(data);
     };
     var initialize_station = function (){
         StationFactory.get_my_station( function (station){

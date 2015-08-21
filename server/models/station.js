@@ -6,7 +6,7 @@ var StationSchema = new mongoose.Schema({
     dj_socket_id : String,
     title : String,
     description : String,
-    artwork_url : {type : String, default : "javascripts/assets/no-image.jpg"},
+    artwork_url : {type : String, default : "https://i.imgur.com/RkUE6fJ.jpg"},
     playlist : [{
         title : String,
         artwork_url : String,

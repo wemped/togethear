@@ -1,0 +1,24 @@
+div.background {
+	background-image: url('../../javascripts/assets/background.png');
+	background-size: cover;
+	height: 100%;
+}
+.info-box {
+	background-color: #868686;
+	color: black;
+	opacity: 0.8;
+}
+.info-box:hover {
+	background-color: black;
+	color: white;
+}
+.info-box div{
+	text-align: center;
+}
+img {
+	opacity: 1;
+}
+h1 {
+	color: white;
+	margin: 0rem 0 1.68rem;
+}

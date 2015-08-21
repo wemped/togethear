@@ -9,15 +9,13 @@
 <link rel='stylesheet' type='text/css' href='./styles/css/index.css'>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
-<body>
+<body ng-controller = 'UserController as uC' id="UserController">
     <header>
         <!-- Navbar and stuff -->
     </header>
     <div  ng-controller='ListenController as lC' id='ListenController'>
         <main>
-            <div ng-controller = 'UserController as uC' id='UserController'>
-                <div ng-view=""></div>
-            </div>
+            <div ng-view=""></div>
        </main>
         <!-- Player footer -->
         <footer id="footer" class='page-footer hidden'>

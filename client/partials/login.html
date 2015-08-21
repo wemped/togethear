@@ -1,13 +1,25 @@
 <!-- <div ng-controller = 'UserController as uC'> -->
-    <h2>Login</h2>
-    <h5><span ng-bind='uC.err'></span></h5>
-    <input type='text' placeholder='Username' ng-model='uC.log.username' />
-    <input type='password' placeholder='Password' ng-model='uC.log.password' />
-    <button ng-click='uC.login()'>Login</button>
-    <h2>Register</h2>
-    <input type='text' placeholder='Username' ng-model='uC.reg.username' />
-    <input type='password' placeholder='Password' ng-model='uC.reg.password' />
-    <button ng-click='uC.register()'>Register</button>
-    <p>- or -</p>
-    <a href="#/dashboard">Skip to home</a>
-<!-- </div> -->
+<link rel="stylesheet" type="text/css" href="./styles/css/login.css">
+<div class="background">
+    <div class="container">
+        <div class="row">
+            <div class="col s6">
+                <h2>Login</h2>
+                <h5><span ng-bind='uC.err'></span></h5>
+                <input type='text' placeholder='Username' ng-model='uC.log.username' />
+                <input type='password' placeholder='Password' ng-model='uC.log.password' />
+                <button class="waves-effect waves-light btn" ng-click='uC.login()'>Login</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s6">
+                <h2>Register</h2>
+                <input type='text' placeholder='Username' ng-model='uC.reg.username' />
+                <input type='password' placeholder='Password' ng-model='uC.reg.password' />
+                <button class="waves-effect waves-light btn" ng-click='uC.register()'>Register</button>
+            </div>
+        </div>
+        <p>- or -</p>
+        <a href="#/dashboard">Skip to home</a>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+h2, p, input {
+	color: white;
+}
+div.background {
+	background-image: url('../../javascripts/assets/background.png');
+	background-size: cover;
+	height: 100%;
+}

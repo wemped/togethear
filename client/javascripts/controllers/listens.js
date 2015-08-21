@@ -11,6 +11,7 @@ togethear_app.controller('ListenController', function ($scope, ListenFactory,$lo
     my.browsing_playlist = [];
     my.playlist = [];
     my.offset = 0;
+    my.all_stations = [];
 
     my.join_station = function (){
         //join room, get playlist
@@ -99,10 +100,20 @@ togethear_app.controller('ListenController', function ($scope, ListenFactory,$lo
         }
         $scope.$apply();
     };
+    my.get_all_stations = function(){
+        ListenFactory.get_all_stations(function (stations){
+            my.all_stations = stations;
+            // $scope.$apply();
+            console.log(my.all_stations);
+        });
+    };
     $scope.$on("$routeChangeSuccess", function ($currentRoute, $previousRoute){
         station_id = $routeParams.id;
         if (station_id){
             my.get_station();
+        }
+        if($location.path() == '/dashboard'){
+            my.get_all_stations();
         }
     });
 });

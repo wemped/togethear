@@ -71,7 +71,7 @@
     border : 2px solid purple;
 
 }
-    #main-content > div > div.col.s12.m4.center.playlist > div:nth-child(2) {
+    div.playlist > div:nth-child(2) {
         background-color: black;
         color: purple;
         padding: 10px 5px 10px 5px;

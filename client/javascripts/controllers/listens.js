@@ -11,6 +11,7 @@ togethear_app.controller('ListenController', function ($scope, ListenFactory,$lo
 
     my.chatService = chatService;
     my.now_playing_info = {};
+    my.radio_info = {};
     my.browsing_playlist = [];
     my.playlist = [];
     my.offset = 0;
@@ -45,6 +46,8 @@ togethear_app.controller('ListenController', function ($scope, ListenFactory,$lo
         ListenFactory.get_station(station_id, function (station){
             my.browsing_playlist = station.playlist;
             browsing_dj_socket_id = station.dj_socket_id;
+            my.radio_info = {title: station.title, artwork: station.artwork_url, dj: station.dj_username};
+            console.log(my.radio_info);
         });
     };
     my.update_playlist = function (data){

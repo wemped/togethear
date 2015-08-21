@@ -3,6 +3,7 @@ togethear_app.factory('ListenFactory',function ($http){
 
     factory.get_station = function (station_id, callback){
         $http.post('/listens/get_station',{station_id : station_id}).then(function (response){
+            console.log(response.data);
             callback(response.data);
         });
     };

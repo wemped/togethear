@@ -1,6 +1,22 @@
 
 <link href='../styles/css/my_station.css' type='text/css' rel='stylesheet' />
 <div ng-controller = 'StationController as sC' id='StationController'>
+
+    <nav>
+        <div class="nav-wrapper">
+            <div class='logo-container center brand-logo light'>
+                Togethear
+            </div>
+          <ul class="right">
+            <li ng-if="uC.logged_in" ng-click='uC.logout()'>
+                <a href='#/'>Logout</a>
+            </li>
+            <li ng-if="!uC.logged_in" ng-click='uC.logout()'>
+                <a href='#/'>Login</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
     <div class='container'>
         <h2 class='header light center'>
             <span ng-bind='sC.station_title'></span>

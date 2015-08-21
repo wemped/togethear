@@ -2,6 +2,7 @@ togethear_app.controller('UserController',function ($scope,UserFactory,$location
     var my = this;
     my.chatService = chatService;
     my.messages = [];
+    my.logged_in = false;
     UserFactory.fetchSession(function (data) {
         my.chatService.user = data;
     });
@@ -26,6 +27,7 @@ togethear_app.controller('UserController',function ($scope,UserFactory,$location
             UserFactory.fetchSession(function (data) {
                 my.chatService.user = data;
             });
+            my.logged_in = true;
             if ($location.path() == '/dj_login'){
                 $location.path('/my_station');
             }else{

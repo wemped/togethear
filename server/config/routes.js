@@ -19,7 +19,7 @@ module.exports = (function (app,io){
         socket.on('/users/chat', function (data){
             console.log('server message data: ',data);
             Users.chat(data,socket,io);
-        })
+        });
         /*DJ ROUTES*/
         socket.on('/djs/create_station',function (data){
             console.log('got a create station');
@@ -54,8 +54,7 @@ module.exports = (function (app,io){
         });
     });
     /*Http*/
-    app.get('/stations',function (req,res){
-        console.log('got get');
+    app.get('/listens/all',function (req,res){
         Listens.getAllStations(req,res);
     });
     app.post('/djs/toggleBroadcast', function (req,res){

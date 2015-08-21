@@ -64,7 +64,9 @@ module.exports = (function (){
         },
         chat: function(data,socket,io){
             console.log(data);
+            var dj_socket_id = data.dj_socket_id;
             io.to(data.station).emit('/users/newMsg', {name: data.name, content: data.content, user: data.user});
+            io.to(dj_socket_id).emit('/stations/newMsg', {name : data.name,content : data.content, user : data.user});
         }
     };
 })();

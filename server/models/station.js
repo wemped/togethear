@@ -6,7 +6,7 @@ var StationSchema = new mongoose.Schema({
     dj_socket_id : String,
     title : String,
     description : String,
-    artwork_url : {type : String, default : "javascripts/assets/no-image.jpg"},
+    artwork_url : {type : String, default : "https://i.imgur.com/RkUE6fJ.jpg"},
     playlist : [{
         title : String,
         artwork_url : String,
@@ -53,6 +53,21 @@ var StationSchema = new mongoose.Schema({
         sc_username : String,
         sc_user_url : String,
     }],
+    now_playing : {
+        title : String,
+        artwork_url : String,
+        duration : Number,
+        genre : String,
+        sc_id : Number,
+        permalink_url: String,
+        purchase_url : String,
+        stream_url : String,
+        streamable : Boolean,
+        tag_list: String,
+        sc_user_id : Number,
+        sc_username : String,
+        sc_user_url : String,
+    },
     created_at : {type: Date, default : new Date()}
 });
 

@@ -1,0 +1,153 @@
+
+<!-- saved from url=(0034)http://localhost:8888/#/my_station -->
+<html ng-app="togethear-app" id="togethear-app" class="ng-scope"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-block-transitions{transition:0s all!important;-webkit-transition:0s all!important;}</style>
+<!-- jQuery -->
+<script src="./togethear_files/jquery.js"></script><style type="text/css"></style>
+<script src="./togethear_files/progressbar.min.js"></script>
+<script src="./togethear_files/angular.min.js"></script>
+<link type="text/css" rel="stylesheet" href="./togethear_files/materialize.min.css" media="screen,projection">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="./togethear_files/index.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body ng-controller="UserController as uC" id="UserController" class="ng-scope" cz-shortcut-listen="true">
+    <header>
+        <!-- Navbar and stuff -->
+    </header>
+    <div ng-controller="ListenController as lC" id="ListenController" class="ng-scope">
+        <main>
+            <!-- ngView:  --><div ng-view="" class="ng-scope">
+<link href="./togethear_files/my_station.css" type="text/css" rel="stylesheet" class="ng-scope">
+<div ng-controller="StationController as sC" id="StationController" class="ng-scope">
+
+    <div id="banner" class="parallax-container">
+        <div class="container">
+            <h1 class="header center "><span ng-bind="sC.station_title" class="ng-binding">NOT MY NAME</span></h1>
+            <div class="row center">
+                <i class="large material-icons" ng-click="sC.toggleBroadcast()" id="toggleBroadcast">
+                    power_settings_new
+                </i>
+            </div>
+        </div>
+        <div class="parallax">
+            <img ng-src="javascripts/assets/no-image.jpg" src="./togethear_files/no-image.jpg">
+        </div>
+    </div>
+
+
+
+
+    <i class="tiny material-icons" ng-click="sC.edit_artwork()" id="edit_artwork">
+        settings
+    </i>
+    <!-- <img ng-src="{{sC.station_artwork_url}}" /> -->
+    <h2>
+        <i class="tiny material-icons" ng-click="sC.edit_title()" id="edit_title">
+            settings
+        </i>
+        <span ng-bind="sC.station_title" class="ng-binding">NOT MY NAME</span>
+        <!-- <i class="small material-icons" ng-click='sC.toggleBroadcast()' id='toggleBroadcast'> -->
+            <!-- power_settings_new -->
+        <!-- </i> -->
+        <img class="circle" src="./togethear_files/8jao7jM.gif">
+    </h2>
+    <p>
+        <i class="tiny material-icons" ng-click="sC.edit_description()" id="edit_description">
+            settings
+        </i>
+        <span ng-bind="sC.station_description" class="ng-binding">Enter a description</span>
+    </p>
+    <div class="row">
+        <div class="col s6">
+            <input type="text" placeholder="SoundCloud Song URL" ng-model="sC.trackUrl" class="ng-pristine ng-valid">
+            <button class="btn-floating" ng-click="sC.addTrackToCatalog()">+</button>
+        </div>
+        <div class="col s6">
+            <input type="text" placeholder="SoundCloud Playlist URL" ng-model="sC.playlistUrl" class="ng-pristine ng-valid">
+            <button class="btn-floating" ng-click="sC.addPlaylistToCatalog()">+</button>
+        </div>
+    </div>
+    <p ng-bind="sC.err" class="ng-binding"></p>
+    <div class="row">
+        <div class="col s6">
+            <h3>Playlist Queue</h3>
+            <ul>
+                <!-- ngRepeat: track in sC.playlist --><li ng-repeat="track in sC.playlist" class="ng-scope">
+                    <span ng-bind="track.title" class="ng-binding">Drake ~ Back To Back Freestyle</span>
+                    <span ng-bind="track.sc_username" class="ng-binding">octobersveryown</span>
+                </li><!-- end ngRepeat: track in sC.playlist -->
+            </ul>
+            <h3>Player</h3>
+            <audio id="audio" src="https://api.soundcloud.com/tracks/216846955/stream?client_id=28528ad11d2c88f57b45b52a5a0f2c83"></audio>
+            <button ng-click="sC.play()">PLAY</button>
+            <button ng-click="sC.pause()">PAUSE</button>
+            <button ng-click="sC.sync_all(false)">sync_all</button>
+            <button ng-click="sC.next_song()">next</button>
+        </div>
+        <div class="col s6">
+            <h3>Catalog</h3>
+            <ul>
+                <!-- ngRepeat: track in sC.catalog --><li ng-repeat="track in sC.catalog" class="ng-scope">
+                    <p ng-bind="track.title" class="ng-binding">Drake ~ Back To Back Freestyle</p>
+                    <button ng-click="sC.addTrackToPlaylist(track)">Add to playlist</button>
+                </li><!-- end ngRepeat: track in sC.catalog -->
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+       </main>
+        <!-- Player footer -->
+        <footer id="footer" class="page-footer hidden">
+            <audio id="audio"></audio>
+            <!-- <div class='row'> -->
+                <div class="song-info">
+                    <div id="now_playing_img_container">
+                        <img ng-src="" class="circle">
+                    </div>
+                    <span ng-bind="lC.now_playing_info.title" class="now_playing_title light ng-binding"></span>
+                    <a ng-href="">
+                        <span ng-bind="lC.now_playing_info.sc_username" class="now_playing_sc_user light ng-binding"></span>
+                    </a>
+                    <i class="material-icons small now_playing_volume">volume_mute</i>
+                </div>
+                <div class="line-container" id="playerbar"><svg viewBox="0 0 100 1" preserveAspectRatio="none" style="display: block; width: 100%;"><path d="M 0,0.5 L 100,0.5" stroke="#FF00FF" stroke-width="1" fill-opacity="0" style="stroke-dasharray: 100px, 100px; stroke-dashoffset: 100px;"></path></svg></div>
+            <!-- </div> -->
+        </footer>
+    </div>
+
+<!-- Spotify -->
+<script src="./togethear_files/sdk-2.0.0.js"></script>
+<!-- Socket.io -->
+<script type="text/javascript" src="./togethear_files/socket.io.js"></script>
+<!-- Angular -->
+<script src="./togethear_files/angular-route.min.js"></script>
+<title>togethear</title>
+<script type="text/javascript">
+//Define angular app//
+var togethear_app = angular.module('togethear-app',['ngRoute']);
+//Initialize playbar
+var line = new ProgressBar.Line('#playerbar', {
+	color: '#FF00FF'
+});
+
+</script>
+<!-- Materialize javascript -->
+<script type="text/javascript" src="./togethear_files/materialize.min.js"></script>
+<script src="./togethear_files/chat_service.js"></script>
+<!-- //Load Controllers and Factories// -->
+<script src="./togethear_files/listen.js"></script>
+<script src="./togethear_files/listens.js"></script>
+<script src="./togethear_files/user.js"></script>
+<script src="./togethear_files/users.js"></script>
+<script src="./togethear_files/station.js"></script>
+<script src="./togethear_files/stations.js"></script>
+<!-- <script src="./javascripts/controllers/players.js"></script> -->
+<!-- <script src="./javascripts/services/player_service.js"></script> -->
+<script src="./togethear_files/initialize.js"></script>
+<script src="./togethear_files/routes.js"></script>
+<script type="text/javascript">
+
+// line.animate(1.0, {from: {color: '#FF0000'}, to: {color: '#0000FF'}, duration: 0});
+</script>
+<div class="hiddendiv common"></div></body></html>

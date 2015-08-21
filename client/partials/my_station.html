@@ -1,61 +1,87 @@
 
-
 <link href='../styles/css/my_station.css' type='text/css' rel='stylesheet' />
 <div ng-controller = 'StationController as sC' id='StationController'>
+    <div class='container'>
+        <h2 class='header light center'>
+            <span ng-bind='sC.station_title'></span>
+            <i class="tiny material-icons" ng-click='sC.edit_title()' id='edit_title'>
+                settings
+            </i>
+        </h2>
+        <div class='row center'>
+            <!-- <div class='col s12'> -->
+            <button class='sync-button large btn-flat center white'>
+                <i class="material-icons" ng-click='sC.sync_all(false)'>
+                    settings_input_antenna
+                </i>
+                SYNC
+            </button>
+            <button class='power-button large btn-flat center white'>
+                <i class="material-icons" ng-click='sC.toggleBroadcast()' id='toggleBroadcast'>
+                    power_settings_new
+                </i>
+            </button>
+            <button class='next-button large btn-flat center white'>
+                <i class="material-icons" ng-click='sC.next_song()' >
+                    skip_next
+                </i>
+                NEXT
+            </button>
+        <!-- </div> -->
+        </div>
+    </div>
+
+    <div class='container' id='main-content'>
+        <div class='row'>
+            <div class='col s12 m4 center playlist'>
+                <h4>Playlist</h4>
+                <div class='playlist-track' ng-repeat='track in sC.playlist'>
+                    <img class='circle' ng-src='{{track.artwork_url}}' />
+                    <p>
+                        <span ng-bind='track.title'>
+                    </p>
+                </div>
+            </div>
+            <div class='col s12 m8 center'>
+                <h4>Catalog</h4>
+                <div class='catalog-track' ng-repeat='track in sC.catalog'>
+                    <i class="material-icons" ng-click='sC.addTrackToPlaylist(track)'>
+                            playlist_add
+                    </i>
+                    <p class='left-align'>
+                        <span ng-bind='track.title'></span>
+                        <span ng-bind='track.sc_username'></span>
+                    </p>
+                </div>
+                <input type='text' placeholder='SoundCloud Song URL' ng-model='sC.trackUrl' />
+                <button class="btn-floating purple" ng-click='sC.addTrackToCatalog()'>+</button>
+                <input type='text' placeholder='SoundCloud Playlist URL' ng-model='sC.playlistUrl' />
+                <button class="btn-floating purple" ng-click='sC.addPlaylistToCatalog()'>+</button>
+            </div>
+        </div>
+        <div class='chat'>
+            <div class='message' ng-repeat='message in sC.messages'>
+                <p><span ng-bind='message.name'></span> : <span ng-bind='message.content'></span>
+            </div>
+        </div>
+        <p>
+            <i class="tiny material-icons" ng-click='sC.edit_description()' id='edit_description'>
+                settings
+            </i>
+            <span ng-bind='sC.station_description'></span>
+        </p>
+        <div class='station-img'>
+            <img ng-src='{{sC.station_artwork_url}}' />
+        </div>
+    </div>
     <i class="tiny material-icons" ng-click='sC.edit_artwork()' id='edit_artwork'>
         settings
     </i>
-    <img ng-src="{{sC.station_artwork_url}}" />
-    <h2>
-        <i class="tiny material-icons" ng-click='sC.edit_title()' id='edit_title'>
-            settings
-        </i>
-        <span ng-bind='sC.station_title'></span>
-        <i class="small material-icons" ng-click='sC.toggleBroadcast()' id='toggleBroadcast'>
-            power_settings_new
-        </i>
-    </h2>
-    <p>
-        <i class="tiny material-icons" ng-click='sC.edit_description()' id='edit_description'>
-            settings
-        </i>
-        <span ng-bind='sC.station_description'></span>
-    </p>
-    <div class="row">
-        <div class="col s6">
-            <input type='text' placeholder='SoundCloud Song URL' ng-model='sC.trackUrl' />
-            <button class="btn-floating" ng-click='sC.addTrackToCatalog()'>+</button>
-        </div>
-        <div class="col s6">
-            <input type='text' placeholder='SoundCloud Playlist URL' ng-model='sC.playlistUrl' />
-            <button class="btn-floating" ng-click='sC.addPlaylistToCatalog()'>+</button>
-        </div>
-    </div>
-    <p ng-bind='sC.err'></p>
-    <div class="row">
-        <div class="col s6">
-            <h3>Playlist Queue</h3>
-            <ul>
-                <li ng-repeat='track in sC.playlist'>
-                    <span ng-bind='track.title'></span>
-                    <span ng-bind='track.sc_username'></span>
-                </li>
-            </ul>
-            <h3>Player</h3>
-            <audio id='audio'></audio>
-            <button ng-click='sC.play()'>PLAY</button>
-            <button ng-click='sC.pause()'>PAUSE</button>
-            <button ng-click='sC.sync_all(false)'>sync_all</button>
-            <button ng-click='sC.next_song()'>next</button>
-        </div>
-        <div class="col s6">
-            <h3>Catalog</h3>
-            <ul>
-                <li ng-repeat = 'track in sC.catalog'>
-                    <p ng-bind= 'track.title'></p>
-                    <button ng-click='sC.addTrackToPlaylist(track)'>Add to playlist</button>
-                </li>
-            </ul>
-        </div>
-    </div>
 </div>
+<script type="text/javascript">
+$('.button-collapse').sideNav({
+    menuWidth: 300, // Default is 240
+      edge: 'right', // Choose the horizontal origin
+      closeOnClick: true // Closes side-nav on <a> clicks, usefu
+});
+</script>

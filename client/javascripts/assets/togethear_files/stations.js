@@ -15,10 +15,9 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
         if(!forced){
             $scope.$apply();
         }
-        play(true);
+        my.play(true);
     };
 
-    my.messages = [];
     my.catalog = [];
     my.stations = [];
     my.playlist = [];
@@ -28,7 +27,6 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
     my.station_artwork_url = '';
 
     my.toggleBroadcast = function(){
-        play(false);
         StationFactory.toggleBroadcast(broadcasting,function (response){
             console.log(response);
             if (response.status){
@@ -37,7 +35,6 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
             }else{
                 $('#toggleBroadcast').removeClass('broadcasting');
                 broadcasting = false;
-                my.pause();
             }
         });
     };
@@ -72,7 +69,7 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
     my.addTrackToPlaylist = function (track){
         StationFactory.addTrackToPlaylist(track);
     };
-    var play = function (next_song){
+    my.play = function (next_song){
         if (playing){
             //nuthin
         }else if (now_playing){
@@ -126,42 +123,18 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
     };
     my.sync_single = function (data){
         //just sync the song position
-        if (data.calibration){
-            var response = {};
-            for (var i=0; i<5; i++){
-                response = {
-                    current_position : now_playing.currentTime,
-                    requester_socket_id : data.requester_socket_id,
-                    calibration : true
-                };
-                socket.emit('/listens/calibration',response);
-            }
+        var response = {};
+        if(now_playing){
             response = {
                 current_position : now_playing.currentTime,
-                requester_socket_id : data.requester_socket_id,
-                calibration : true,
-                final : true
+                requester_socket_id : data.requester_socket_id
             };
-            socket.emit('/listens/calibration',response);
         }else{
-           var response = {};
-           if(now_playing){
-               response = {
-                   current_position : now_playing.currentTime,
-                   requester_socket_id : data.requester_socket_id
-               };
-           }else{
-               response.err = 'not playing right now';
-               //TODO
-           }
-           if (data.joining){
-               socket.emit('/listens/sync_initial',response);
-               console.log('sent initial sync');
-           }else{
-               console.log('sending single response');
-               socket.emit('/djs/sync_single_response',response);
-           }
+            response.err = 'not playing right now';
+            //TODO
         }
+        console.log('sending single response');
+        socket.emit('/djs/sync_single_response',response);
     };
 
     my.sync_all = function (next_song){
@@ -189,10 +162,6 @@ togethear_app.controller('StationController',function ($scope,StationFactory,$lo
             StationFactory.edit_station(my.station_title, my.station_description, new_artwork_url);
             my.station_artwork_url = new_artwork_url;
         }
-    };
-    my.new_msg = function (data){
-        console.log(data);
-        my.messages.push(data);
     };
     var initialize_station = function (){
         StationFactory.get_my_station( function (station){

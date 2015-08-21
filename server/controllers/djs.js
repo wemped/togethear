@@ -18,6 +18,7 @@ module.exports = (function (){
                     return null;
                 }
                 socket.request.session.station_id = station._id;
+                socket.request.session.save();
                 User.findByIdAndUpdate(user_id,{"station" : station._id},
                                                      {safe : true,upsert : true, new : true},
                     function (err,user){
@@ -88,6 +89,8 @@ module.exports = (function (){
                 });
         },
         get_my_station : function (req,res){
+            console.log(req.session.username);
+            console.log(req.session.station_id);
             Station.findById(req.session.station_id, function (err,station){
                 if (err){
                     console.log(err);

@@ -2,6 +2,7 @@ div.background {
 	background-image: url('../../javascripts/assets/background.png');
 	background-size: cover;
 	height: 100%;
+	background-color: black;
 }
 .info-box {
 	background-color: #868686;
@@ -15,10 +16,25 @@ div.background {
 .info-box div{
 	text-align: center;
 }
-img {
+img.icon {
 	opacity: 1;
+	width: 75%;
+}
+img.sndcld {
+	width: 70px;
 }
 h1 {
 	color: white;
 	margin: 0rem 0 1.68rem;
+}
+div.right p {
+	display: inline-block;
+	color: white;
+}
+div.right a {
+	display: inline-block;
+	vertical-align: middle;
+}
+div.row {
+	margin-bottom: 0px;
 }

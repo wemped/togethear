@@ -9,6 +9,7 @@ togethear_app.controller('ListenController', function ($scope, ListenFactory,$lo
 
     my.chatService = chatService; //needed for sending/recieving messages
     my.now_playing_info = {};
+    my.radio_info = {};
     my.browsing_playlist = []; //playlist when we are navigating stations we haven't joined
     my.playlist = []; //playlist for the station we are in
     my.offset = 100; //milisecond offset for song position

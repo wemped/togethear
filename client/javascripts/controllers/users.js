@@ -26,7 +26,11 @@ togethear_app.controller('UserController',function ($scope,UserFactory,$location
             UserFactory.fetchSession(function (data) {
                 my.chatService.user = data;
             });
-            $location.path('/dashboard');
+            if ($location.path() == '/dj_login'){
+                $location.path('/my_station');
+            }else{
+                $location.path('/dashboard');
+            }
             my.err = '';
         }
         $scope.$apply();

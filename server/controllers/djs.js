@@ -101,7 +101,14 @@ module.exports = (function (){
         },
         /*When a listener requests and sync, and the dj is replying it will be routed through here*/
         guide_sync_single : function (data,socket,io){
-            io.to(data.requester_socket_id).emit('/listens/sync',data);
+            console.log('guiding sync to listener with initial set to');
+            if (data.initial){
+                console.log(data.initial);
+                io.to(data.requester_socket_id).emit('/listens/sync_initial',data);
+            }else{
+                console.log('false');
+                io.to(data.requester_socket_id).emit('/listens/sync',data);
+            }
         },
         /**/
         sync_all_listeners : function (data,socket,io){

@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Station = mongoose.model('Station');
-var Djs = require('./Djs.js');
+var Djs = require('./djs.js');
 
 module.exports = (function (){
     return {

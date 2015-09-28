@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 
 /*Start listening*/
 var app = express();
-var server = app.listen(8888);
+var server = app.listen(8000);
 console.log('listening on port 8888');
 
 var sessionMiddleware = session({
